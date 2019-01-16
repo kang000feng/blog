@@ -1,0 +1,1106 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="前言&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;虽说之前我想要把自己做过的项目一一写成博客放出来，可是之前因为CSDN手机号验证什么的真的让我对它的不满爆发了，所以这么久以来没有写新的博客，因为我自己搭的博客还在建设中。但是既然之前说过要放项目，那么也不能食言，就把我做过的几个项目简单放上来吧，不做太多的解释。不废话了。 项目功能介绍&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本项目是一个">
+<meta name="keywords" content="Spring,SpringMVC,购物商城">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）">
+<meta property="og:url" content="https://blog.icedsoul.cn/2019/01/15/shopping/index.html">
+<meta property="og:site_name" content="冰魄的个人博客">
+<meta property="og:description" content="前言&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;虽说之前我想要把自己做过的项目一一写成博客放出来，可是之前因为CSDN手机号验证什么的真的让我对它的不满爆发了，所以这么久以来没有写新的博客，因为我自己搭的博客还在建设中。但是既然之前说过要放项目，那么也不能食言，就把我做过的几个项目简单放上来吧，不做太多的解释。不废话了。 项目功能介绍&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本项目是一个">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://i4.buimg.com/588926/4f55a56c600353d3.png">
+<meta property="og:image" content="http://i2.muimg.com/588926/d9732cf1077364b1.png">
+<meta property="og:image" content="http://i2.muimg.com/588926/824c6423b8adee56.png">
+<meta property="og:image" content="http://i4.buimg.com/588926/e768a19233e6a97c.png">
+<meta property="og:image" content="http://i2.muimg.com/588926/00c922b032619e71.png">
+<meta property="og:image" content="http://i2.muimg.com/588926/871acdbef93d7057.png">
+<meta property="og:updated_time" content="2019-01-16T01:44:22.569Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）">
+<meta name="twitter:description" content="前言&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;虽说之前我想要把自己做过的项目一一写成博客放出来，可是之前因为CSDN手机号验证什么的真的让我对它的不满爆发了，所以这么久以来没有写新的博客，因为我自己搭的博客还在建设中。但是既然之前说过要放项目，那么也不能食言，就把我做过的几个项目简单放上来吧，不做太多的解释。不废话了。 项目功能介绍&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;本项目是一个">
+<meta name="twitter:image" content="http://i4.buimg.com/588926/4f55a56c600353d3.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.icedsoul.cn/2019/01/15/shopping/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate） | 冰魄的个人博客</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ef054124ba894c986045305810831295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">冰魄的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">IcedSoul's Blog</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.icedsoul.cn/2019/01/15/shopping/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="IcedSoul">
+      <meta itemprop="description" content="冰魄的个人博客">
+      <meta itemprop="image" content="/images/icon.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰魄的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-15 20:23:14" itemprop="dateCreated datePublished" datetime="2019-01-15T20:23:14+08:00">2019-01-15</time>
+            
+
+            
+              
+
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-01-16 09:44:22" itemprop="dateModified" datetime="2019-01-16T09:44:22+08:00">2019-01-16</time>
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/项目实战/" itemprop="url" rel="index"><span itemprop="name">项目实战</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2019/01/15/shopping/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2019/01/15/shopping/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2019/01/15/shopping/" class="leancloud_visitors" data-flag-title="Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">1.7k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">3 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;虽说之前我想要把自己做过的项目一一写成博客放出来，可是之前因为CSDN手机号验证什么的真的让我对它的不满爆发了，所以这么久以来没有写新的博客，因为我自己搭的博客还在建设中。但是既然之前说过要放项目，那么也不能食言，就把我做过的几个项目简单放上来吧，不做太多的解释。不废话了。</p>
+<h2 id="项目功能介绍"><a href="#项目功能介绍" class="headerlink" title="项目功能介绍"></a>项目功能介绍</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;本项目是一个在线购物商城，但是请注意，此网站是单商家，也就说这里一个商家可以添加多种商品，而不是像淘宝一样可以有多个商家。而且本项目也仅供学习交流，禁止用作任何商业用途。</p>
+<h2 id="主要功能"><a href="#主要功能" class="headerlink" title="主要功能"></a>主要功能</h2><h3 id="普通用户："><a href="#普通用户：" class="headerlink" title="普通用户："></a>普通用户：</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;1.登录、注册功能<br>&nbsp;&nbsp;&nbsp;&nbsp;2.浏览商品功能<br>&nbsp;&nbsp;&nbsp;&nbsp;3.搜索商品功能<br>&nbsp;&nbsp;&nbsp;&nbsp;4.查看商品详情<br>&nbsp;&nbsp;&nbsp;&nbsp;5.添加购物车<br>&nbsp;&nbsp;&nbsp;&nbsp;6.购买功能（在商品详情页单独购买或在购物车批量购买）<br>&nbsp;&nbsp;&nbsp;&nbsp;7.查看订单状态<br>&nbsp;&nbsp;&nbsp;&nbsp;9.确认收货功能<br>&nbsp;&nbsp;&nbsp;&nbsp;10.评价已购买商品功能  </p>
+<h3 id="管理员："><a href="#管理员：" class="headerlink" title="管理员："></a>管理员：</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;1.拥有普通用户所有功能<br>&nbsp;&nbsp;&nbsp;&nbsp;2.查看、删除所有用户功能<br>&nbsp;&nbsp;&nbsp;&nbsp;3.查看、删除所有商品功能<br>&nbsp;&nbsp;&nbsp;&nbsp;4.添加新的商品功能<br>&nbsp;&nbsp;&nbsp;&nbsp;5.处理订单功能<br>&nbsp;&nbsp;&nbsp;&nbsp;6发货功能  </p>
+<h2 id="项目主要技术与工具"><a href="#项目主要技术与工具" class="headerlink" title="项目主要技术与工具"></a>项目主要技术与工具</h2><h3 id="开发工具及环境"><a href="#开发工具及环境" class="headerlink" title="开发工具及环境"></a>开发工具及环境</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;IDE是Intellij IDEA，clone或者下载之后可以直接用IJ打开项目<br>&nbsp;&nbsp;&nbsp;&nbsp;运行环境是Tomcat 9.0可以根据自己情况配置，7.0以上应该都行<br>&nbsp;&nbsp;&nbsp;&nbsp;项目版本管理使用了Maven工具，类型也为Maven项目<br>&nbsp;&nbsp;&nbsp;&nbsp;数据库使用了MySQL</p>
+<h3 id="开发技术"><a href="#开发技术" class="headerlink" title="开发技术"></a>开发技术</h3><p>&nbsp;&nbsp;&nbsp;&nbsp;后端框架为Spring+SpringMVC+Hibernate，注解形式<br>&nbsp;&nbsp;&nbsp;&nbsp;前端框架为Bootstrap，使用插件有Layer.js等<br>&nbsp;&nbsp;&nbsp;&nbsp;前后端交互方式为ajax，使用json格式传递数据<br>&lt;!–</p>
+<h2 id="运行截图"><a href="#运行截图" class="headerlink" title="运行截图"></a>运行截图</h2><p><img src="http://i4.buimg.com/588926/4f55a56c600353d3.png" alt="主页"><br><img src="http://i2.muimg.com/588926/d9732cf1077364b1.png" alt="商品详情页"><br><img src="http://i2.muimg.com/588926/824c6423b8adee56.png" alt="购物车"><br><img src="http://i4.buimg.com/588926/e768a19233e6a97c.png" alt="订单状态"><br><img src="http://i2.muimg.com/588926/00c922b032619e71.png" alt="订单处理"><br><img src="http://i2.muimg.com/588926/871acdbef93d7057.png" alt="订单处理"><br>–!&gt;</p>
+<h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p>&nbsp;&nbsp;&nbsp;&nbsp;本项目仅用于学习交流，安全性极差，严禁用于除学习交流外其它用途，代码本身此处不做解释，我会在代码里面添加必要的注释。<br>&nbsp;&nbsp;&nbsp;&nbsp;项目下载之后需要修改相应的内容，如果完全没有开发基础请不要问我“为什么我下载了你的项目跑不起来？”“为什么我下载了你的项目运行报错了？”之类的问题，JavaWeb开发本身就比较依赖各种环境，要么你把你的环境改的和我用的一样，要么你把项目相关配置做改动使其能在你的环境下运行。没基础请先去学习相关的基础知识，然后再来了解此项目。个人精力有限，无法帮每个新手解决这种问题，我会尽量在注释里面说清楚要改哪些内容。<br>&nbsp;&nbsp;&nbsp;&nbsp;<strong>项目对应MySQL数据库不需要专门用SQL创建，只需要在数据库新建一个shopping数据库即可，对应的表会在项目第一次运行时自动创建。</strong></p>
+<h2 id="在线演示地址"><a href="#在线演示地址" class="headerlink" title="在线演示地址"></a>在线演示地址</h2><p><a href="http://119.23.212.211:8080/Shopping/" target="_blank" rel="noopener">点我</a> 服务器未过期可以访问，不保证一直可以访问。</p>
+<h2 id="源码下载"><a href="#源码下载" class="headerlink" title="源码下载"></a>源码下载</h2><p>GitHub：<br><a href="https://github.com/IcedSoul/Shopping" target="_blank" rel="noopener">https://github.com/IcedSoul/Shopping</a></p>
+<h3 id="如果对你有所帮助，Github-star一下让小透明开心下呗"><a href="#如果对你有所帮助，Github-star一下让小透明开心下呗" class="headerlink" title="如果对你有所帮助，Github star一下让小透明开心下呗~"></a>如果对你有所帮助，Github star一下让小透明开心下呗~</h3>
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          
+            <a href="/tags/SpringMVC/" rel="tag"><i class="fa fa-tag"></i> SpringMVC</a>
+          
+            <a href="/tags/购物商城/" rel="tag"><i class="fa fa-tag"></i> 购物商城</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/15/spring-mvc-demo/" rel="next" title="Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）">
+                <i class="fa fa-chevron-left"></i> Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/16/Web端即时聊天项目实现（基于WebSocket）/" rel="prev" title="Web端即时聊天项目实现（基于WebSocket）">
+                Web端即时聊天项目实现（基于WebSocket） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/icon.jpeg" alt="IcedSoul">
+            
+              <p class="site-author-name" itemprop="name">IcedSoul</p>
+              <p class="site-description motion-element" itemprop="description">冰魄的个人博客</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/IcedSoul" title="GitHub &rarr; https://github.com/IcedSoul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/guoxiaofeng_2015@163.com" title="E-Mail &rarr; guoxiaofeng_2015@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.bewindoweb.com/" title="http://www.bewindoweb.com/" rel="noopener" target="_blank">BEWINDOWEB /技术/APP/二次元</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目功能介绍"><span class="nav-number">2.</span> <span class="nav-text">项目功能介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要功能"><span class="nav-number">3.</span> <span class="nav-text">主要功能</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#普通用户："><span class="nav-number">3.1.</span> <span class="nav-text">普通用户：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#管理员："><span class="nav-number">3.2.</span> <span class="nav-text">管理员：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#项目主要技术与工具"><span class="nav-number">4.</span> <span class="nav-text">项目主要技术与工具</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#开发工具及环境"><span class="nav-number">4.1.</span> <span class="nav-text">开发工具及环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#开发技术"><span class="nav-number">4.2.</span> <span class="nav-text">开发技术</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#运行截图"><span class="nav-number">5.</span> <span class="nav-text">运行截图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意"><span class="nav-number">6.</span> <span class="nav-text">注意</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#在线演示地址"><span class="nav-number">7.</span> <span class="nav-text">在线演示地址</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码下载"><span class="nav-number">8.</span> <span class="nav-text">源码下载</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#如果对你有所帮助，Github-star一下让小透明开心下呗"><span class="nav-number">8.1.</span> <span class="nav-text">如果对你有所帮助，Github star一下让小透明开心下呗~</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">IcedSoul</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">50k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:24</span>
+  
+</div>
+
+
+  <div class="powered-by">
+    行胜于言
+  </div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">
+    慎言笃行
+  </div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<style>
+#gitment-container a {
+  border-bottom: none;
+}
+
+  a.gitment-editor-footer-tip, .gitment-container.gitment-footer-container {
+    display: none;
+  }
+
+</style>
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'IcedSoul',
+      repo: 'Gitment',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: 'f647861bdd9f4224ebb3bc69151537ecd7766bb1',
+      
+        client_id: 'bc5dd2274a78305e909f'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'tAzqQw92n6UcueiKh29dzBk4-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'tAzqQw92n6UcueiKh29dzBk4-gzGzoHsz',
+                'X-LC-Key': 'NlqlQHrdYzWMsBOv3NW7kajj',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+
+  <meta name="description" content="介绍&amp;emsp;&amp;emsp;本片博客主要是介绍一下Spring+SpringMVC+Hibernate框架的大致工作流程和其基本的配置代码，在博客最后提供了一个基本的Demo下载，本Demo采用Maven管理依赖。 环境、工具&amp;emsp;&amp;emsp;Java开发环境、IntelliJ IDEA 或者 MyEclipse&amp;emsp;&amp;emsp;Tomcat服务器（7，8，9均可） 工作流程&amp;emsp">
+<meta name="keywords" content="Spring,SpringMVC,Demo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）">
+<meta property="og:url" content="https://blog.icedsoul.cn/2019/01/15/spring-mvc-demo/index.html">
+<meta property="og:site_name" content="冰魄的个人博客">
+<meta property="og:description" content="介绍&amp;emsp;&amp;emsp;本片博客主要是介绍一下Spring+SpringMVC+Hibernate框架的大致工作流程和其基本的配置代码，在博客最后提供了一个基本的Demo下载，本Demo采用Maven管理依赖。 环境、工具&amp;emsp;&amp;emsp;Java开发环境、IntelliJ IDEA 或者 MyEclipse&amp;emsp;&amp;emsp;Tomcat服务器（7，8，9均可） 工作流程&amp;emsp">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="http://ou7jocypf.bkt.clouddn.com/17-8-5/40753646.jpg">
+<meta property="og:image" content="http://ou7jocypf.bkt.clouddn.com/17-8-5/81263064.jpg">
+<meta property="og:image" content="http://ou7jocypf.bkt.clouddn.com/17-8-5/10349208.jpg">
+<meta property="og:updated_time" content="2019-01-15T12:17:14.923Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）">
+<meta name="twitter:description" content="介绍&amp;emsp;&amp;emsp;本片博客主要是介绍一下Spring+SpringMVC+Hibernate框架的大致工作流程和其基本的配置代码，在博客最后提供了一个基本的Demo下载，本Demo采用Maven管理依赖。 环境、工具&amp;emsp;&amp;emsp;Java开发环境、IntelliJ IDEA 或者 MyEclipse&amp;emsp;&amp;emsp;Tomcat服务器（7，8，9均可） 工作流程&amp;emsp">
+<meta name="twitter:image" content="http://ou7jocypf.bkt.clouddn.com/17-8-5/40753646.jpg">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.icedsoul.cn/2019/01/15/spring-mvc-demo/">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理） | 冰魄的个人博客</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ef054124ba894c986045305810831295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">冰魄的个人博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <p class="site-subtitle">IcedSoul's Blog</p>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.icedsoul.cn/2019/01/15/spring-mvc-demo/">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="IcedSoul">
+      <meta itemprop="description" content="冰魄的个人博客">
+      <meta itemprop="image" content="/images/icon.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="冰魄的个人博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-01-15 19:58:50 / 修改时间：20:17:14" itemprop="dateCreated datePublished" datetime="2019-01-15T19:58:50+08:00">2019-01-15</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Spring-MVC/" itemprop="url" rel="index"><span itemprop="name">Spring MVC</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+              
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+            
+                <a href="/2019/01/15/spring-mvc-demo/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count gitment-comments-count" data-xid="/2019/01/15/spring-mvc-demo/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+            <span id="/2019/01/15/spring-mvc-demo/" class="leancloud_visitors" data-flag-title="Spring+SpringMVC+Hibernate 基本Demo（注解、Maven管理）">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">21k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">36 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h2><p>&emsp;&emsp;本片博客主要是介绍一下Spring+SpringMVC+Hibernate框架的大致工作流程和其基本的配置代码，在博客最后提供了一个基本的Demo下载，本Demo采用Maven管理依赖。</p>
+<h2 id="环境、工具"><a href="#环境、工具" class="headerlink" title="环境、工具"></a>环境、工具</h2><p>&emsp;&emsp;Java开发环境、IntelliJ IDEA 或者 MyEclipse<br>&emsp;&emsp;Tomcat服务器（7，8，9均可）</p>
+<h2 id="工作流程"><a href="#工作流程" class="headerlink" title="工作流程"></a>工作流程</h2><p>&emsp;&emsp;Spring容器想必不用多说，大家手头端的参考书写的估计很清楚，百度一下也有很多大神写的也很好，我就不赘述了。在我们实际使用过程中，我们使用Spring来管理事务，Hibernate就全部托管给Spring，而Spring提供的MVC开发模块即SpringMVC当然也是由Spring管理的，其实也不一定要使用SpringMVC，Spring也可以管理Struts2等。Spring的控制反转和依赖注入这里也不再多说，大家可以自己去专门学习了解。这里主要简单说一下SpringMVC的工作流程，因为这与下面的配置有一定的关系。大家结合着工作原理来看配置文件，两相印证之下应该会对SpringMVC工作流程以及配置为何这么配置有一些新的认识。<br>&emsp;&emsp;首先，在说SpringMVC之前，我们先来看一下一张经典的MVC开发模式的图。<br><img src="http://ou7jocypf.bkt.clouddn.com/17-8-5/40753646.jpg" alt=""><br>&emsp;&emsp;所谓MVC开发模式，Model，View和Controller三者分离，三者分离的目的主要是降低耦合程度。从图中可以明显看出，当我们进行Web开发时，我们采用MVC开发模式，应该要有一个清楚的层次认知（“分层”是一个说法，没有太过具体的明确规定，不一定非要奉某种方法为真理，合适有理有据惯用好用即可），在我的理解以及项目中，主要如图中分为了dao层（数据库数据处理层），service层（业务逻辑层），controller层（控制层），前端即view，大家也可以去了解其它分层方法，喜欢就好。<br>&emsp;&emsp;上面那张图就是本Demo项目结构是这样的原因：<br><img src="http://ou7jocypf.bkt.clouddn.com/17-8-5/81263064.jpg" alt=""><br>&emsp;&emsp;了解了项目为何这么分层之后，来看一看SpringMVC的工作流程，这部分的介绍将会结合配置文件一起说，先来看下面一张图：<br><img src="http://ou7jocypf.bkt.clouddn.com/17-8-5/10349208.jpg" alt=""><br>&emsp;&emsp;其实SpringMVC工作流程按照图中的步骤来看就非常清楚啦！如果你是第一次接触可能不太熟悉每个部分的单词，但不用担心时间久了慢慢就记得了，只需要大致有个概念就行了，因为这些都是框架帮助我们在后台完成的，我们只要按照既定模式来配置好就好了。<br>&emsp;&emsp;首先，当收到来自用户的请求时，就像你要去某公司找某人有事，你就是那个请求，DispatcherServlet首先拦截了所有的请求,就像个门卫大爷似的，进门就把你拦住了，不讲清楚你是来干啥的就不放你过去啦。DispatcherServlet然后把请求交给HandleMapping，HandleMapping就做了一件事，我来看看你是找谁的，弄明白你是找谁的我才能派人通知他不是？因为SpringMVC的Controller里面是有很多处理方法的。就像你说你们找谁的，那门卫大叔就要把你交传达室小伙子，查查你要找的人在不在，在哪里。<br>在HandleMapping找到以后，接下来就到了HandleAdapter，HandleAdapter对Controller中具体的处理进行的封装，可以理解为现在找到你要找的那个人啦，现在去见他把，不过不能直接见，得在我们给你的房间见，这个房间就是HandleAdapter，在这个房间进行py交易之后，你搞不清白你交易的结果是啥，接下来就需要对内容进行解析，viewResolver来对你拿到的内容进行解析，就相当于你对交易的结果搞不懂啊，人家用的人家专用的格式，你得找人家专门的部门帮你翻译一下，最后翻译成功，找到view，一个完整的工作流程结束。<br>&emsp;&emsp;例子不一定恰当，但是能在一定程度上来表明问题。<br>&emsp;&emsp;接下来结合上面了解的工作流程来看看配置文件如何配置的吧。</p>
+<h2 id="新建Maven-JavaWeb项目"><a href="#新建Maven-JavaWeb项目" class="headerlink" title="新建Maven JavaWeb项目"></a>新建Maven JavaWeb项目</h2><p>&emsp;&emsp;IntelliJ IDEA创建这一点我不打算自己讲，因为其他博主讲的真的是太好了，我不认为自己复述一遍有什么意义，链接如下：<br>&emsp;&emsp;  <a href="http://www.cnblogs.com/sy270321/p/4723139.html" target="_blank" rel="noopener">http://www.cnblogs.com/sy270321/p/4723139.html</a><br>&emsp;&emsp;MyEclipse或者Eclipse请大家自行百度啦，这方面博客很多的！</p>
+<h2 id="主要配置代码"><a href="#主要配置代码" class="headerlink" title="主要配置代码"></a>主要配置代码</h2><p>&emsp;&emsp;先看pom文件，导入的jar包，在这里我声明，和别人乱七八糟的依赖关系不同，在导入之后我花了很长的时间把所有不必要的依赖关系都去掉了，能简单的绝不复杂，这里我所导入的包都是我能找到最简单最方便快捷的导入方式了，导入的依赖看起来不多，但是几乎已经涵盖了所有用到的内容，每一个依赖是有什么作用哪里能用到都有说明，你可以根据自己实际使用情况作出修改。<br>pom.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br></pre></td><td class="code"><pre><span class="line">&lt;project xmlns=&quot;http://maven.apache.org/POM/4.0.0&quot; xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd&quot;&gt;</span><br><span class="line">  &lt;modelVersion&gt;4.0.0&lt;/modelVersion&gt;</span><br><span class="line">  &lt;groupId&gt;com.example&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;example&lt;/artifactId&gt;</span><br><span class="line">  &lt;packaging&gt;war&lt;/packaging&gt;</span><br><span class="line">  &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;</span><br><span class="line">  &lt;name&gt;example&lt;/name&gt;</span><br><span class="line">  &lt;url&gt;http://maven.apache.org&lt;/url&gt;</span><br><span class="line">  &lt;dependencies&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;junit&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;junit&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;3.8.1&lt;/version&gt;</span><br><span class="line">      &lt;scope&gt;test&lt;/scope&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--JavaEE 7.0--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;javax&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;javaee-api&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;7.0&lt;/version&gt;</span><br><span class="line">      &lt;scope&gt;provided&lt;/scope&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 这个必须要加，不然连jsp页面都打不开 jsp页面第一行引入了这个--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.glassfish.web&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;javax.servlet.jsp.jstl&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;1.2.2&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--MySQL 5.1.38--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;mysql&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;5.1.38&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--SpringMVC 4.3.5.RELEASE --&gt;</span><br><span class="line">    &lt;!--配置第一个之后会自动导入一些spring mvc相关的依赖包，但是有可能我们需要包的没有被自动导入</span><br><span class="line">        因此，之后的第二个及以后是根据项目需要添加需要导入的spring mvc相关的包--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;spring-webmvc&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;4.3.5.RELEASE&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--这个包不会随spring-webmvc导入，这个包作用是管理Hibernate资源--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;spring-orm&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;4.3.5.RELEASE&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--这个也不会随spring-webmvc导入，作用是为spring-aop提供支持--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.springframework&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;spring-aspects&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;4.3.5.RELEASE&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--Apache Commons dbcp 2.1.1  Apache提供的一些组件，dbcp配置数据源时需要使用--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.apache.commons&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;commons-dbcp2&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;2.1.1&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--支持SpringMVC文件上传功能--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;commons-fileupload&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;commons-fileupload&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;1.3.2&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &lt;!--Hibernate 4.3.8.Final--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;org.hibernate&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;hibernate-core&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;4.3.8.Final&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- FastJson 1.2.24 --&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;com.alibaba&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;fastjson&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;1.2.24&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- jackson-core Spring MVC配置RequestMappingHandlerAdapter时用到了--&gt;</span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;jackson-core&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;2.8.6&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line">    &lt;dependency&gt;</span><br><span class="line">      &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;</span><br><span class="line">      &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;</span><br><span class="line">      &lt;version&gt;2.8.6&lt;/version&gt;</span><br><span class="line">    &lt;/dependency&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &lt;/dependencies&gt;</span><br><span class="line">  &lt;build&gt;</span><br><span class="line">    &lt;finalName&gt;com.example&lt;/finalName&gt;</span><br><span class="line">    &lt;plugins&gt;</span><br><span class="line">      &lt;!--这个插件作用是指定编译这个项目的Java版本和Project Language Level ，针对Intellij IDEA--&gt;</span><br><span class="line">      &lt;plugin&gt;</span><br><span class="line">        &lt;groupId&gt;org.apache.maven.plugins&lt;/groupId&gt;</span><br><span class="line">        &lt;artifactId&gt;maven-compiler-plugin&lt;/artifactId&gt;</span><br><span class="line">        &lt;version&gt;2.3.2&lt;/version&gt;</span><br><span class="line">        &lt;configuration&gt;</span><br><span class="line">          &lt;source&gt;1.8&lt;/source&gt;</span><br><span class="line">          &lt;target&gt;1.8&lt;/target&gt;</span><br><span class="line">        &lt;/configuration&gt;</span><br><span class="line">      &lt;/plugin&gt;</span><br><span class="line"></span><br><span class="line">    &lt;/plugins&gt;</span><br><span class="line">  &lt;/build&gt;</span><br><span class="line">&lt;/project&gt;</span><br></pre></td></tr></table></figure></p>
+<p>&emsp;&emsp;看起来很少对吧，实际上你还可以根据自己情况再删去一些自己不需要的！这些包具体干什么的注释里都有介绍，就不再多说了。最后提供下载的文档里注释也有的。<br>&emsp;&emsp;然后是web.xml<br>web.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE web-app PUBLIC</span><br><span class="line">        &quot;-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN&quot;</span><br><span class="line">        &quot;http://java.sun.com/dtd/web-app_2_3.dtd&quot; &gt;</span><br><span class="line"></span><br><span class="line">&lt;web-app xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">         xmlns=&quot;http://java.sun.com/xml/ns/javaee&quot;</span><br><span class="line">         xsi:schemaLocation=&quot;http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd&quot;</span><br><span class="line">         version=&quot;3.0&quot;&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!--配置默认进入页面--&gt;</span><br><span class="line">  &lt;welcome-file-list&gt;</span><br><span class="line">    &lt;welcome-file&gt;/WEB-INF/views/index.jsp&lt;/welcome-file&gt;</span><br><span class="line">  &lt;/welcome-file-list&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &lt;!-- 配置Spring监听 --&gt;</span><br><span class="line">  &lt;listener&gt;</span><br><span class="line">    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;</span><br><span class="line">  &lt;/listener&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  &lt;!-- 加载spring配置文件 --&gt;</span><br><span class="line">  &lt;context-param&gt;</span><br><span class="line">    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span><br><span class="line">    &lt;param-value&gt;classpath:spring/applicationContext.xml&lt;/param-value&gt;</span><br><span class="line">  &lt;/context-param&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- 配置Spring MVC--&gt;</span><br><span class="line">  &lt;servlet-mapping&gt;</span><br><span class="line">    &lt;servlet-name&gt;spring&lt;/servlet-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/servlet-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;servlet&gt;</span><br><span class="line">    &lt;servlet-name&gt;spring&lt;/servlet-name&gt;</span><br><span class="line">    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">      &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;</span><br><span class="line">      &lt;param-value&gt;classpath:spring/spring-mvc.xml&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">    &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;</span><br><span class="line">    &lt;async-supported&gt;true&lt;/async-supported&gt;</span><br><span class="line">  &lt;/servlet&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- 配置Hibernate Session --&gt;</span><br><span class="line">  &lt;filter-mapping&gt;</span><br><span class="line">    &lt;filter-name&gt;openSession&lt;/filter-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/filter-mapping&gt;</span><br><span class="line"></span><br><span class="line">  &lt;filter&gt;</span><br><span class="line">    &lt;filter-name&gt;openSession&lt;/filter-name&gt;</span><br><span class="line">    &lt;filter-class&gt;org.springframework.orm.hibernate4.support.OpenSessionInViewFilter&lt;/filter-class&gt;</span><br><span class="line">  &lt;/filter&gt;</span><br><span class="line"></span><br><span class="line">  &lt;!-- 配置字符集 --&gt;</span><br><span class="line">  &lt;filter&gt;</span><br><span class="line">    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;</span><br><span class="line">    &lt;filter-class&gt;org.springframework.web.filter.CharacterEncodingFilter&lt;/filter-class&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">      &lt;param-name&gt;encoding&lt;/param-name&gt;</span><br><span class="line">      &lt;param-value&gt;UTF-8&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">    &lt;init-param&gt;</span><br><span class="line">      &lt;param-name&gt;forceEncoding&lt;/param-name&gt;</span><br><span class="line">      &lt;param-value&gt;true&lt;/param-value&gt;</span><br><span class="line">    &lt;/init-param&gt;</span><br><span class="line">  &lt;/filter&gt;</span><br><span class="line">  &lt;filter-mapping&gt;</span><br><span class="line">    &lt;filter-name&gt;encodingFilter&lt;/filter-name&gt;</span><br><span class="line">    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;</span><br><span class="line">  &lt;/filter-mapping&gt;</span><br><span class="line">&lt;/web-app&gt;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;在这里我们看到了DispatcherServlet，他就是图中那个看门大爷！然后我们看一看applicationContext.xml<br>applicationContext.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans</span><br><span class="line">    xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">    xmlns:aop=&quot;http://www.springframework.org/schema/aop&quot;</span><br><span class="line">    xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span><br><span class="line">    xmlns:tx=&quot;http://www.springframework.org/schema/tx&quot;</span><br><span class="line">    xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</span><br><span class="line">    xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans </span><br><span class="line">                        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd </span><br><span class="line">                        http://www.springframework.org/schema/tx </span><br><span class="line">                        http://www.springframework.org/schema/tx/spring-tx.xsd</span><br><span class="line">                        http://www.springframework.org/schema/context</span><br><span class="line">                        http://www.springframework.org/schema/context/spring-context.xsd</span><br><span class="line">                        http://www.springframework.org/schema/aop</span><br><span class="line">                        http://www.springframework.org/schema/aop/spring-aop.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 扫描注解,过滤掉Controller --&gt;</span><br><span class="line">    &lt;context:component-scan base-package=&quot;com.example&quot;&gt;</span><br><span class="line">        &lt;context:exclude-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</span><br><span class="line">    &lt;/context:component-scan&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 引入数据库资源文件 --&gt;</span><br><span class="line">    &lt;bean id=&quot;propertyConfigurer&quot; class=&quot;org.springframework.beans.factory.config.PropertyPlaceholderConfigurer&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;location&quot; value=&quot;classpath:properties/database.properties&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 配置数据源 --&gt;</span><br><span class="line">    &lt;bean id=&quot;dataSource&quot;</span><br><span class="line">          class=&quot;org.apache.commons.dbcp2.BasicDataSource&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;driverClassName&quot; value=&quot;$&#123;driverClassName&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;url&quot; value=&quot;$&#123;url&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;username&quot; value=&quot;$&#123;userName&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;password&quot; value=&quot;$&#123;password&#125;&quot;&gt;&lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- AOP --&gt;</span><br><span class="line">    &lt;aop:aspectj-autoproxy/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 配置 hibernate session --&gt;</span><br><span class="line">    &lt;bean id=&quot;sessionFactory&quot;</span><br><span class="line">          class=&quot;org.springframework.orm.hibernate4.LocalSessionFactoryBean&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;dataSource&quot; ref=&quot;dataSource&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;hibernateProperties&quot;&gt;</span><br><span class="line">            &lt;props&gt;</span><br><span class="line">                &lt;prop key=&quot;hibernate.dialect&quot;&gt;org.hibernate.dialect.MySQLDialect&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;hibernate.hbm2ddl.auto&quot;&gt;update&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;hibernate.show_sql&quot;&gt;true&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;hibernate.format_sql&quot;&gt;true&lt;/prop&gt;</span><br><span class="line"></span><br><span class="line">                &lt;prop key=&quot;hibernate.cache.use_second_level_cache&quot;&gt;false&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;hibernate.cache.use_query_cache&quot;&gt;false&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;current_session_context_class&quot;&gt;thread&lt;/prop&gt;</span><br><span class="line">                &lt;prop key=&quot;hibernate.current_session_context_class&quot;&gt;org.springframework.orm.hibernate4.SpringSessionContext&lt;/prop&gt;</span><br><span class="line">            &lt;/props&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;packagesToScan&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;value&gt;com.example.entity&lt;/value&gt;</span><br><span class="line">                &lt;!--千万注意此处，要跟着项目名字变化！否则扫描不到实体，自然无法完成与数据库的映射--&gt;</span><br><span class="line">            &lt;/list&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 配置事务管理器 --&gt;</span><br><span class="line">    &lt;bean id=&quot;transactionManager&quot; class=&quot;org.springframework.orm.hibernate4.HibernateTransactionManager&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;sessionFactory&quot; ref=&quot;sessionFactory&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--下面的路径要换成自己具体的路径！不然会出错的--&gt;</span><br><span class="line">    &lt;aop:config proxy-target-class=&quot;true&quot;&gt;</span><br><span class="line">        &lt;aop:advisor pointcut=&quot;execution(public * com.example.service.*Service.*(..))&quot; advice-ref=&quot;txAdvice&quot;/&gt;</span><br><span class="line">    &lt;/aop:config&gt;</span><br><span class="line"></span><br><span class="line">    &lt;tx:annotation-driven transaction-manager=&quot;transactionManager&quot; proxy-target-class=&quot;true&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;tx:advice id=&quot;txAdvice&quot; transaction-manager=&quot;transactionManager&quot;&gt;</span><br><span class="line">        &lt;tx:attributes&gt;</span><br><span class="line">            &lt;tx:method name=&quot;get*&quot; read-only=&quot;true&quot; propagation=&quot;REQUIRED&quot;/&gt;</span><br><span class="line">            &lt;tx:method name=&quot;list*&quot; read-only=&quot;true&quot; propagation=&quot;REQUIRED&quot;/&gt;</span><br><span class="line">            &lt;tx:method name=&quot;find*&quot; read-only=&quot;true&quot; propagation=&quot;REQUIRED&quot;/&gt;</span><br><span class="line">            &lt;tx:method name=&quot;save*&quot; propagation=&quot;REQUIRED&quot; /&gt;</span><br><span class="line">            &lt;tx:method name=&quot;delete*&quot; propagation=&quot;REQUIRED&quot; /&gt;</span><br><span class="line">            &lt;tx:method name=&quot;update*&quot; propagation=&quot;REQUIRED&quot; /&gt;</span><br><span class="line">            &lt;tx:method name=&quot;add*&quot; propagation=&quot;REQUIRED&quot; /&gt;</span><br><span class="line">            &lt;tx:method name=&quot;*&quot; propagation=&quot;REQUIRED&quot; rollback-for=&quot;Exception&quot;/&gt;</span><br><span class="line">        &lt;/tx:attributes&gt;</span><br><span class="line">    &lt;/tx:advice&gt;</span><br><span class="line">    </span><br><span class="line">   &lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>&nbsp;&nbsp;&nbsp;&nbsp;然后是spring-mvc.xml<br>spring-mvc.xml</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;beans xmlns=&quot;http://www.springframework.org/schema/beans&quot;</span><br><span class="line">       xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:p=&quot;http://www.springframework.org/schema/p&quot;</span><br><span class="line">       xmlns:context=&quot;http://www.springframework.org/schema/context&quot;</span><br><span class="line">       xmlns:mvc=&quot;http://www.springframework.org/schema/mvc&quot;</span><br><span class="line">       xsi:schemaLocation=&quot;http://www.springframework.org/schema/beans</span><br><span class="line">                        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd</span><br><span class="line">                        http://www.springframework.org/schema/context</span><br><span class="line">                        http://www.springframework.org/schema/context/spring-context-4.0.xsd</span><br><span class="line">                        http://www.springframework.org/schema/mvc</span><br><span class="line">                        http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd&quot;&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 扫描注解 过滤掉Service和Repository，只扫描Controller --&gt;</span><br><span class="line">    &lt;context:component-scan base-package=&quot;com.example&quot; &gt;</span><br><span class="line">        &lt;context:include-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Controller&quot;/&gt;</span><br><span class="line">        &lt;context:exclude-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Service&quot;/&gt;</span><br><span class="line">        &lt;context:exclude-filter type=&quot;annotation&quot; expression=&quot;org.springframework.stereotype.Repository&quot;/&gt;</span><br><span class="line">    &lt;/context:component-scan&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--配置静态资源--&gt;</span><br><span class="line">    &lt;mvc:resources location=&quot;/static/js/&quot; mapping=&quot;/js/**&quot;/&gt;</span><br><span class="line">    &lt;mvc:resources location=&quot;/static/img/&quot; mapping=&quot;/img/**&quot;/&gt;</span><br><span class="line">    &lt;mvc:resources location=&quot;/static/css/&quot; mapping=&quot;/css/**&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--配置SpringMVC注解对应的内容--&gt;</span><br><span class="line">    &lt;!--这个是RequestMappingHandlerMapping拦截器，对应即为Controller前面的@RequestMapping注解--&gt;</span><br><span class="line">    &lt;!--HandlerMapping 作用如下：</span><br><span class="line">        SpringMVC工作过程中，DispatcherServlet收到请求之后会把请求交给HandlerMapping，</span><br><span class="line">        HandlerMapping根据配置（此处为注解）找到请求对应的Handler--&gt;</span><br><span class="line">    &lt;bean class=&quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--这个是RequestMappingHandlerAdapter--&gt;</span><br><span class="line">    &lt;!--HandlerAdapter 作用如下：</span><br><span class="line">        SpringMVC工作过程中，HandlerMapping找到Handler，Handler对具体的处理（Controller）进行封装，</span><br><span class="line">        然后由HandlerAdapter对Handler进行具体处理</span><br><span class="line">        在这里我们定义了返回对象自动转换为Json数据--&gt;</span><br><span class="line">    &lt;bean class=&quot;org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;cacheSeconds&quot; value=&quot;0&quot;/&gt;</span><br><span class="line">        &lt;property name=&quot;messageConverters&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;ref bean=&quot;mappingJackson2HttpMessageConverter&quot;/&gt;</span><br><span class="line">                &lt;ref bean=&quot;mappingStringHttpMessageConverter&quot;/&gt;</span><br><span class="line">            &lt;/list&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">        &lt;property name=&quot;webBindingInitializer&quot; ref=&quot;webBindingInitializer&quot;&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--设置文件上传的bean，如果项目中不需要上传文件可以去掉--&gt;</span><br><span class="line">    &lt;bean id=&quot;multipartResolver&quot; class=&quot;org.springframework.web.multipart.commons.CommonsMultipartResolver&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;maxUploadSize&quot; value=&quot;10485760&quot; /&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--这里就是Spring对http消息格式转换提供的接口--&gt;</span><br><span class="line">    &lt;bean id=&quot;mappingStringHttpMessageConverter&quot; class=&quot;org.springframework.http.converter.StringHttpMessageConverter&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;supportedMediaTypes&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;value&gt;text/plain;charset=UTF-8&lt;/value&gt;</span><br><span class="line">                &lt;value&gt;application/json;charset=UTF-8&lt;/value&gt;</span><br><span class="line">            &lt;/list&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--同上--&gt;</span><br><span class="line">    &lt;bean id=&quot;mappingJackson2HttpMessageConverter&quot; class=&quot;org.springframework.http.converter.json.MappingJackson2HttpMessageConverter&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;supportedMediaTypes&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;bean class=&quot;org.springframework.http.MediaType&quot;&gt;</span><br><span class="line">                    &lt;constructor-arg index=&quot;0&quot; value=&quot;application&quot;/&gt;</span><br><span class="line">                    &lt;constructor-arg index=&quot;1&quot; value=&quot;json&quot;/&gt;</span><br><span class="line">                    &lt;constructor-arg index=&quot;2&quot; value=&quot;UTF-8&quot;/&gt;</span><br><span class="line">                &lt;/bean&gt;</span><br><span class="line">            &lt;/list&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!--注册转换器到SpringMVC ，并注册在了上面的RequestMappingHandlerAdapter中--&gt;</span><br><span class="line">    &lt;bean id=&quot;webBindingInitializer&quot; class=&quot;org.springframework.web.bind.support.ConfigurableWebBindingInitializer&quot;&gt;</span><br><span class="line">        &lt;property name=&quot;conversionService&quot;&gt;</span><br><span class="line">            &lt;bean class=&quot;org.springframework.core.convert.support.DefaultConversionService&quot;&gt;&lt;/bean&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">    &lt;/bean&gt;</span><br><span class="line"></span><br><span class="line">    &lt;!-- 添加viewResolver --&gt;</span><br><span class="line">    &lt;!--viewResolver的作用是接收到返回的ModelAndView的时候把它处理成视图（jsp文件）--&gt;</span><br><span class="line">    &lt;bean id=&quot;viewResolver&quot; class=&quot;org.springframework.web.servlet.view.ContentNegotiatingViewResolver&quot;&gt;  </span><br><span class="line">        &lt;property name=&quot;viewResolvers&quot;&gt;</span><br><span class="line">            &lt;list&gt;</span><br><span class="line">                &lt;bean class=&quot;org.springframework.web.servlet.view.InternalResourceViewResolver&quot;&gt;</span><br><span class="line">                    &lt;property name=&quot;order&quot; value=&quot;2&quot;/&gt;</span><br><span class="line">                    &lt;property name=&quot;prefix&quot; value=&quot;/WEB-INF/views/&quot; /&gt;  </span><br><span class="line">                    &lt;property name=&quot;suffix&quot; value=&quot;.jsp&quot; /&gt; </span><br><span class="line">                &lt;/bean&gt;</span><br><span class="line">            &lt;/list&gt;</span><br><span class="line">        &lt;/property&gt;</span><br><span class="line">         </span><br><span class="line">    &lt;/bean&gt;  </span><br><span class="line">&lt;/beans&gt;</span><br></pre></td></tr></table></figure>
+<p>&emsp;&emsp;里面我写的注释挺多了，记得结合上面的工作流程理解配置，两相比对！</p>
+<h2 id="资源下载"><a href="#资源下载" class="headerlink" title="资源下载"></a>资源下载</h2><p>&emsp;&emsp;代码我已经上传到百度云啦，传送门如下：<br>&emsp;&emsp;<a href="https://pan.baidu.com/s/1nzZFhqNHtalKmgg8q0QnRA" target="_blank" rel="noopener">点我下载</a><br>&emsp;&emsp;OK，好好学习，天天向上，加油！</p>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Spring/" rel="tag"><i class="fa fa-tag"></i> Spring</a>
+          
+            <a href="/tags/SpringMVC/" rel="tag"><i class="fa fa-tag"></i> SpringMVC</a>
+          
+            <a href="/tags/Demo/" rel="tag"><i class="fa fa-tag"></i> Demo</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/01/15/ajaxfileupload/" rel="next" title="ajaxFileUpload报错$.ajaxFileUpload is not a function解决方法">
+                <i class="fa fa-chevron-left"></i> ajaxFileUpload报错$.ajaxFileUpload is not a function解决方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/01/15/shopping/" rel="prev" title="Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate）">
+                Shopping+在线购物商城的实现（Spring+SpringMVC+Hibernate） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="comments">
+      
+        <div id="gitment-container"></div>
+      
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/icon.jpeg" alt="IcedSoul">
+            
+              <p class="site-author-name" itemprop="name">IcedSoul</p>
+              <p class="site-description motion-element" itemprop="description">冰魄的个人博客</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">4</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">3</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/IcedSoul" title="GitHub &rarr; https://github.com/IcedSoul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/guoxiaofeng_2015@163.com" title="E-Mail &rarr; guoxiaofeng_2015@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.bewindoweb.com/" title="http://www.bewindoweb.com/" rel="noopener" target="_blank">BEWINDOWEB /技术/APP/二次元</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#介绍"><span class="nav-number">1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#环境、工具"><span class="nav-number">2.</span> <span class="nav-text">环境、工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#工作流程"><span class="nav-number">3.</span> <span class="nav-text">工作流程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#新建Maven-JavaWeb项目"><span class="nav-number">4.</span> <span class="nav-text">新建Maven JavaWeb项目</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要配置代码"><span class="nav-number">5.</span> <span class="nav-text">主要配置代码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#资源下载"><span class="nav-number">6.</span> <span class="nav-text">资源下载</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">IcedSoul</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">50k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">1:24</span>
+  
+</div>
+
+
+  <div class="powered-by">
+    行胜于言
+  </div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">
+    慎言笃行
+  </div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,255" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    <!-- LOCAL: You can save these files to your site and update links -->
+
+  
+  <script src="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/gitmint.browser.js"></script>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/theme-next/theme-next-gitment@1/default.css">
+<!-- END LOCAL -->
+
+<style>
+#gitment-container a {
+  border-bottom: none;
+}
+
+  a.gitment-editor-footer-tip, .gitment-container.gitment-footer-container {
+    display: none;
+  }
+
+</style>
+
+<script>
+  function renderGitment() {
+    var gitment = new Gitmint({
+      id: window.location.pathname,
+      owner: 'IcedSoul',
+      repo: 'Gitment',
+      
+        lang: '' || navigator.language || navigator.systemLanguage || navigator.userLanguage,
+      
+      oauth: {
+      
+      
+        client_secret: 'f647861bdd9f4224ebb3bc69151537ecd7766bb1',
+      
+        client_id: 'bc5dd2274a78305e909f'
+      }
+    });
+    gitment.render('gitment-container');
+  }
+
+  
+    renderGitment();
+  
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'tAzqQw92n6UcueiKh29dzBk4-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'tAzqQw92n6UcueiKh29dzBk4-gzGzoHsz',
+                'X-LC-Key': 'NlqlQHrdYzWMsBOv3NW7kajj',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
