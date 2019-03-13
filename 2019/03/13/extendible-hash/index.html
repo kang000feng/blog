@@ -96,17 +96,23 @@
 
 
 
-  <meta name="description" content="Nothing here">
+  <meta name="description" content="可扩展哈希 ExtendibleHash定义扩展哈希是动态哈希的一种，以下定义摘自维基百科[4] 。  Extendible hashing is a type of hash system which treats a hash as a bit string and uses a trie for bucket lookup.[1] Because of the hierarchical na">
+<meta name="keywords" content="算法,扩展哈希,ExtendibleHash">
 <meta property="og:type" content="article">
-<meta property="og:title" content="桐小木">
+<meta property="og:title" content="可扩展哈希 ExtendibleHash Java实现">
 <meta property="og:url" content="https://blog.icedsoul.cn/2019/03/13/extendible-hash/index.html">
 <meta property="og:site_name" content="桐小木">
-<meta property="og:description" content="Nothing here">
+<meta property="og:description" content="可扩展哈希 ExtendibleHash定义扩展哈希是动态哈希的一种，以下定义摘自维基百科[4] 。  Extendible hashing is a type of hash system which treats a hash as a bit string and uses a trie for bucket lookup.[1] Because of the hierarchical na">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-03-13T07:22:42.489Z">
+<meta property="og:image" content="http://img.icedsoul.cn/img/blog/extendibleHash/1.png">
+<meta property="og:image" content="http://img.icedsoul.cn/img/blog/extendibleHash/2.png">
+<meta property="og:image" content="http://img.icedsoul.cn/img/blog/extendibleHash/3.png">
+<meta property="og:image" content="http://img.icedsoul.cn/img/blog/extendibleHash/4.png">
+<meta property="og:updated_time" content="2019-03-13T07:46:28.909Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="桐小木">
-<meta name="twitter:description" content="Nothing here">
+<meta name="twitter:title" content="可扩展哈希 ExtendibleHash Java实现">
+<meta name="twitter:description" content="可扩展哈希 ExtendibleHash定义扩展哈希是动态哈希的一种，以下定义摘自维基百科[4] 。  Extendible hashing is a type of hash system which treats a hash as a bit string and uses a trie for bucket lookup.[1] Because of the hierarchical na">
+<meta name="twitter:image" content="http://img.icedsoul.cn/img/blog/extendibleHash/1.png">
 
 
 
@@ -123,7 +129,7 @@
   };
 </script>
 
-  <title> | 桐小木</title>
+  <title>可扩展哈希 ExtendibleHash Java实现 | 桐小木</title>
   
 
 
@@ -404,7 +410,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">
+          <h1 class="post-title" itemprop="name headline">可扩展哈希 ExtendibleHash Java实现
 
               
             
@@ -430,17 +436,31 @@
                 
               
 
-              <time title="创建时间：2019-03-13 15:23:18 / 修改时间：15:22:42" itemprop="dateCreated datePublished" datetime="2019-03-13T15:23:18+08:00">2019-03-13</time>
+              <time title="创建时间：2019-03-13 15:46:28" itemprop="dateCreated datePublished" datetime="2019-03-13T15:46:28+08:00">2019-03-13</time>
             
 
-            
-              
-
-              
             
           </span>
 
           
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/常见算法/" itemprop="url" rel="index"><span itemprop="name">常见算法</span></a></span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -449,7 +469,7 @@
 
           
           
-            <span id="/2019/03/13/extendible-hash/" class="leancloud_visitors" data-flag-title="">
+            <span id="/2019/03/13/extendible-hash/" class="leancloud_visitors" data-flag-title="可扩展哈希 ExtendibleHash Java实现">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -474,7 +494,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">0</span>
+                <span title="本文字数">9k</span>
               
 
               
@@ -488,7 +508,7 @@
                 
                   <span class="post-meta-item-text">阅读时长 &asymp;</span>
                 
-                <span title="阅读时长">1 分钟</span>
+                <span title="阅读时长">15 分钟</span>
               
             </div>
           
@@ -508,7 +528,30 @@
       
 
       
-        
+        <h1 id="可扩展哈希-ExtendibleHash"><a href="#可扩展哈希-ExtendibleHash" class="headerlink" title="可扩展哈希 ExtendibleHash"></a>可扩展哈希 ExtendibleHash</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>扩展哈希是动态哈希的一种，以下定义摘自维基百科[4] 。</p>
+<blockquote>
+<p>Extendible hashing is a type of hash system which treats a hash as a bit string and uses a trie for bucket lookup.[1] Because of the hierarchical nature of the system, re-hashing is an incremental operation (done one bucket at a time, as needed). This means that time-sensitive applications are less affected by table growth than by standard full-table rehashes.<br>Extendible hashing was described by Ronald Fagin in 1979. Practically all modern filesystems use either extendible hashing or B-trees. In particular, the Global File System, ZFS, and the SpadFS filesystem use extendible hashing</p>
+</blockquote>
+<h2 id="理解"><a href="#理解" class="headerlink" title="理解"></a>理解</h2><p>单单读这里定义其实并不是能够很好的理解扩展哈希，需要对哈希表本身的实现方式并且理解参考内容[2]中的多哈希表的实现方式有所理解才能看懂扩展哈希的做法，如果不知道多哈希表是什么请先看参考内容[2]。<br>扩展哈希的思想是引入目录数组，通过翻倍目录数组的方式来代替桶的翻倍。它和线性哈希的都属于动态哈希。和线性哈希相比，动态哈希多了一个目录数组，目录数组里面存储指向桶的指针(在Java里即地址，以下统称指针)，其扩展方式也和线性哈希不太一样。<br>在扩展哈希算法中，基本的数据结构有目录项和桶。目录项数组用来存储指向桶的指针，桶是实际存放数据的地方，每个桶可以存放一定数量的数据。除此之外，每张哈希表还拥有一个全部深度globalDepth，每个桶还有一个局部深度depth，这两个属性与扩展哈希的动态扩展有关。<br>在多哈希表中，因为数据过多单个哈希表冲突过多，影响插入和查询的性能，所以采取使用多张哈希表来存储数据，多个哈希表共用同一个哈希函数，目录项分别指向不同的哈希表。这种做法虽然实现简单，但是有空间利用率太低，占用内存过多。而扩展哈希算法就是在多哈希表的基础上做出了改进:不新建哈希表，通过目录项翻倍的方式来代替桶的翻倍，而实际上桶只有在满了之后才会分裂出一个新的桶，即正常情况下，直接插入数据。在待插入数据的桶已满时，将这个桶分裂为两个，其中的数据尽量平均分到两个桶中。然后更新目录项的索引，使其始终指向正确的桶。在目录项不够时，目录项直接翻倍。<br>目录项翻倍和保证指针的正常则借助与全局深度globalDepth和局部深度depth，这两个属性来保持。目录项中始终有2^(globalDepth)项，并且编号分别为二进制(001，010，011…)，通过哈希函数计算得到的hsah(key)的二进制后globalDepth位在目录项中对应的桶即为实际的数据的桶。在插入数据的过程中，如果桶满了会进行桶的分裂操作，并且动态得维护指针，使在插入过程中目录项的指针不会指向错误的桶。  </p>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p>维基百科也有例子，但是我这边经过理解之后也举出了自己的例子。<br>如图所示，我们设置hask(key) = key.hashCode()，整数的hashCode()为其本身，每个桶最多存储4个数据，目录项最多有100项，然后依次向扩展哈希表中插入:<br>10，17，3，29，4，5，18，6，22<br>首先，依次插入10，17，3，29，因为globalDepth为0，所以直接插入到其对应的桶中:  </p>
+<p><img src="http://img.icedsoul.cn/img/blog/extendibleHash/1.png" alt="ExtendibleHash-1"></p>
+<p>此时，插入4时，第一个桶已满，则会进行分裂，一个桶分裂成两个桶，桶深度depth增大1，变为1，并且根据hash(key)二进制的后depth位进行区分，为0的留在这个桶中，为1的进入新的桶中如10的二进制最后一位为0，则保留，17，3，29二进制最后一位为1，则进入新的桶。然后因为局部深度depth大于全局深度globalDepth，所以globalDepth也变为1，目录进行翻倍，然后维护目录指针，使新的目录指向正确的桶。分裂完成后，再插入4，此时globalDepth为1了，所以要看hash(key)的二进制的后一位，因为4的二进制最后一位为0，所以插入第一个桶。  </p>
+<p><img src="http://img.icedsoul.cn/img/blog/extendibleHash/2.png" alt="ExtendibleHash-2"></p>
+<p>然后继续插入5，此时globalDepth为1，hash(5)的二进制后一位为1，第二个桶仍然有空间，所以插入成功。然后插入18和6，hash(18)和hash(6)的二进制后一位都为0，第一个桶仍有两个位置，所以都插入成功:  </p>
+<p><img src="http://img.icedsoul.cn/img/blog/extendibleHash/3.png" alt="ExtendibleHash-3"></p>
+<p>然后插入22，hash(22)的二进制最后一位为0，本应插入第一个桶，但是第一个桶已经满了，所以需要进行分裂，depth增大1，然后根据hash(key)的二进制数的倒数第depth位即倒数第2位进行区分，为0的保留，为1的进入新的桶，其中4的二进制后2位为00，所以保留，而10，18，6的二进制后两位为10，进入新的桶，之后因为局部深度大于全局深度，所以全局深度更新为2，左边目录项翻倍，更新目录项指针，新分裂出来的最后两位是10，所谓目录的第三项指向新分裂出来的桶，而第四项11暂时没有对应桶，但是不能空着，因为最后一位为1是数次数仍在第二个桶里面，所以需要把它的指针指向第二个桶。如下图所示，从上向下数第三个桶即为新分裂出来的桶:  </p>
+<p><img src="http://img.icedsoul.cn/img/blog/extendibleHash/4.png" alt="ExtendibleHash-4"></p>
+<p>后面一直重复这个过程即可。<br>从例子可以看出，扩展哈希巧妙地利用了key的hashCode的二进制位，用全局深度来表示当前有效的倒数globalDepth位二进制位，根据这个码可以快速定位数据。而在桶的分裂时，则根据局部深度来判定当前桶有效的查询位，分裂时深度加一，也要对数据进行区分，区分开的数据往往比较平均。虽然右边桶的局部深度可能不一样，但是通过简单地维护索引都可以进行方便地查询，比如上图中，第二个桶的局部深度只有1，小于全局深度，虽然查询目录时是根据全局深度来的，但是我们通过维护目录数组，让01和11都指向了depth为1的桶，这样查询依然准确，而且在第二个桶进行分裂时只需要修改11的指针仍然能够保证正确。  </p>
+<h2 id="代码实现"><a href="#代码实现" class="headerlink" title="代码实现"></a>代码实现</h2><p>ExtendibleHash.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> extendibleHash;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ExtendibleHash</span>&lt;<span class="title">T</span>, <span class="title">V</span>&gt; </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer maxValueNumber = <span class="number">20</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer maxBucketNumber = <span class="number">100000</span>;</span><br><span class="line">    <span class="keyword">private</span> Integer globalDepth;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Bucket&lt;T, V&gt; buckets[];</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ExtendibleHash</span><span class="params">()</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.globalDepth = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">this</span>.buckets = <span class="keyword">new</span> Bucket[<span class="keyword">this</span>.maxBucketNumber];</span><br><span class="line">        <span class="keyword">this</span>.buckets[<span class="number">0</span>] = <span class="keyword">new</span> Bucket&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ExtendibleHash</span><span class="params">(Integer maxBucketNumber, Integer maxValueNumber)</span></span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.maxBucketNumber = maxBucketNumber;</span><br><span class="line">        <span class="keyword">this</span>.maxValueNumber = maxValueNumber;</span><br><span class="line">        <span class="keyword">this</span>.globalDepth = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">this</span>.buckets = <span class="keyword">new</span> Bucket[<span class="keyword">this</span>.maxBucketNumber];</span><br><span class="line">        <span class="keyword">this</span>.buckets[<span class="number">0</span>] = <span class="keyword">new</span> Bucket&lt;&gt;();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(T value, V key)</span></span>&#123;</span><br><span class="line">        <span class="comment">//根据全局深度计算出应该插入的桶的编号</span></span><br><span class="line">        Integer bucketNumber = hash(key);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//判断当前桶是否装满</span></span><br><span class="line">        <span class="comment">//如果装满了,进行桶扩展</span></span><br><span class="line">        <span class="keyword">if</span>(buckets[bucketNumber].isFull())&#123;</span><br><span class="line">            Bucket bucket = buckets[bucketNumber];</span><br><span class="line">            <span class="comment">//桶局部深度增加</span></span><br><span class="line">            bucket.depth++;</span><br><span class="line">            <span class="comment">//新建桶,并且对当前桶进行拆分</span></span><br><span class="line">            Bucket&lt;T, V&gt; tempBucket = bucket.split();</span><br><span class="line"></span><br><span class="line">            <span class="comment">//如果局部深度大于全部深度,则更新全局深度,</span></span><br><span class="line">            <span class="keyword">if</span>(bucket.depth &gt; <span class="keyword">this</span>.globalDepth)&#123;</span><br><span class="line">                <span class="keyword">this</span>.globalDepth = bucket.depth;</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//更新目录索引</span></span><br><span class="line">            <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">1</span> &lt;&lt; (<span class="keyword">this</span>.globalDepth - <span class="number">1</span>); i &lt; <span class="number">1</span> &lt;&lt; <span class="keyword">this</span>.globalDepth; i++)&#123;</span><br><span class="line">                <span class="keyword">if</span>(tempBucket.hashKey.equals(i))</span><br><span class="line">                    <span class="keyword">this</span>.buckets[i] = tempBucket;</span><br><span class="line">                <span class="keyword">else</span> <span class="keyword">if</span>(<span class="keyword">this</span>.buckets[i] == <span class="keyword">null</span>)</span><br><span class="line">                    <span class="keyword">this</span>.buckets[i] = <span class="keyword">this</span>.buckets[i - (<span class="number">1</span> &lt;&lt; (<span class="keyword">this</span>.globalDepth - <span class="number">1</span>))];</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="keyword">this</span>.insert(value, key);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="comment">//如果没有装满,直接进行插入</span></span><br><span class="line">        <span class="keyword">else</span>&#123;</span><br><span class="line">            buckets[bucketNumber].insert(value, key);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> T <span class="title">find</span><span class="params">(V key)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>.buckets[hash(key)].find(key);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 根据全局深度计算当前key所在的桶的编号</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> key</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">hash</span><span class="params">(V key)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> key.hashCode() % (<span class="number">1</span> &lt;&lt; <span class="keyword">this</span>.globalDepth);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 定义桶的数据结构</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;T&gt; 插入的数据的类型</span></span><br><span class="line"><span class="comment">     * <span class="doctag">@param</span> &lt;V&gt; 索引的键的类型</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    <span class="class"><span class="keyword">class</span> <span class="title">Bucket</span>&lt;<span class="title">T</span>, <span class="title">V</span>&gt;</span>&#123;</span><br><span class="line">        <span class="comment">//用数组复制起来比较麻烦,所以这里用map来存储</span></span><br><span class="line">        <span class="keyword">private</span> Map&lt;V, T&gt; values;</span><br><span class="line">        <span class="keyword">private</span> Integer number;</span><br><span class="line">        <span class="keyword">private</span> Integer depth;</span><br><span class="line">        <span class="keyword">private</span> Integer hashKey;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">Bucket</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.values = <span class="keyword">new</span> HashMap&lt;V, T&gt;();</span><br><span class="line">            <span class="keyword">this</span>.number = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">this</span>.depth = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">this</span>.hashKey = <span class="number">0</span>;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isFull</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.number &gt;= maxValueNumber;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">insert</span><span class="params">(T value, V key)</span></span>&#123;</span><br><span class="line">            <span class="keyword">this</span>.values.put(key, value);</span><br><span class="line">            <span class="keyword">this</span>.number++;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> T <span class="title">find</span><span class="params">(V key)</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> <span class="keyword">this</span>.values.get(key);</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 进行桶分裂</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Bucket&lt;T, V&gt; <span class="title">split</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">//新建桶,设置桶局部深度</span></span><br><span class="line">            Bucket&lt;T, V&gt; bucket = <span class="keyword">new</span> Bucket&lt;&gt;();</span><br><span class="line">            bucket.depth = <span class="keyword">this</span>.depth;</span><br><span class="line"></span><br><span class="line">            <span class="comment">//计算分裂出的桶的hashKey</span></span><br><span class="line">            bucket.hashKey = (<span class="number">1</span> &lt;&lt; (bucket.depth - <span class="number">1</span>)) + <span class="keyword">this</span>.hashKey;</span><br><span class="line"></span><br><span class="line">            Map&lt;V, T&gt; tempMap = <span class="keyword">new</span> HashMap&lt;&gt;();</span><br><span class="line">            Integer tempNumber = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">for</span>(V key1 : <span class="keyword">this</span>.values.keySet())&#123;</span><br><span class="line">                <span class="keyword">if</span>(<span class="keyword">this</span>.hash(key1).equals(bucket.hashKey)) &#123;</span><br><span class="line">                    bucket.values.put(key1, <span class="keyword">this</span>.values.get(key1));</span><br><span class="line">                    bucket.number++;</span><br><span class="line">                &#125;</span><br><span class="line">                <span class="keyword">else</span> &#123;</span><br><span class="line">                    tempMap.put(key1, <span class="keyword">this</span>.values.get(key1));</span><br><span class="line">                    tempNumber++;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">            <span class="keyword">this</span>.values = tempMap;</span><br><span class="line">            <span class="keyword">this</span>.number = tempNumber;</span><br><span class="line">            <span class="keyword">return</span> bucket;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment">/**</span></span><br><span class="line"><span class="comment">         * 根据局部深度计算当前key所在的桶的编号</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@param</span> key</span></span><br><span class="line"><span class="comment">         * <span class="doctag">@return</span></span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="function"><span class="keyword">public</span> Integer <span class="title">hash</span><span class="params">(V key)</span></span>&#123;</span><br><span class="line">            <span class="keyword">return</span> key.hashCode() % (<span class="number">1</span> &lt;&lt; <span class="keyword">this</span>.depth);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>以下代码用于测试：<br>Product.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> extendibleHash;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Product</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Integer id;</span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="keyword">private</span> Double price;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">Product</span><span class="params">(Integer id, String name, Double price)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.price = price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Integer <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(Integer id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Double <span class="title">getPrice</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> price;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setPrice</span><span class="params">(Double price)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.price = price;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>Test.java<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> extendibleHash;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> Product;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.util.Scanner;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Test</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span></span>&#123;</span><br><span class="line">        Scanner input = <span class="keyword">new</span> Scanner(System.in);</span><br><span class="line">        ExtendibleHash&lt;Product, Integer&gt; b = <span class="keyword">new</span> ExtendibleHash&lt;&gt;(<span class="number">10000000</span>, <span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> time1 = System.nanoTime();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; <span class="number">20000</span>; i++) &#123;</span><br><span class="line">            Product p = <span class="keyword">new</span> Product(i,<span class="string">"test"</span>,i * <span class="number">0.1</span>);</span><br><span class="line">            b.insert(p, p.getId());</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> time2 = System.nanoTime();</span><br><span class="line"></span><br><span class="line">        Product p = b.find(<span class="number">12441</span>);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">long</span> time3 = System.nanoTime();</span><br><span class="line"></span><br><span class="line">        System.out.println(<span class="string">"插入耗时: "</span> + (time2 - time1));</span><br><span class="line">        System.out.println(<span class="string">"查询耗时: "</span> + (time3 - time2));</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="参考内容"><a href="#参考内容" class="headerlink" title="参考内容"></a>参考内容</h2><ol>
+<li>扩展哈希的Java实现：<a href="https://github.com/peter-otoole/Extendible-Hashing/blob/master/src/extendiblehashing/Functions.java" target="_blank" rel="noopener">https://github.com/peter-otoole/Extendible-Hashing/blob/master/src/extendiblehashing/Functions.java</a></li>
+<li>动态哈希方法：<a href="https://www.cnblogs.com/kegeyang/archive/2012/04/05/2432608.html" target="_blank" rel="noopener">https://www.cnblogs.com/kegeyang/archive/2012/04/05/2432608.html</a></li>
+<li>内存数据库中的索引技术：<a href="https://blog.csdn.net/wallwind/article/details/48106765" target="_blank" rel="noopener">https://blog.csdn.net/wallwind/article/details/48106765</a></li>
+<li>维基百科 Extendible_hashing：<a href="https://en.wikipedia.org/wiki/Extendible_hashing" target="_blank" rel="noopener">https://en.wikipedia.org/wiki/Extendible_hashing</a></li>
+</ol>
+
       
     </div>
 
@@ -528,6 +571,16 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"><i class="fa fa-tag"></i> 算法</a>
+          
+            <a href="/tags/扩展哈希/" rel="tag"><i class="fa fa-tag"></i> 扩展哈希</a>
+          
+            <a href="/tags/ExtendibleHash/" rel="tag"><i class="fa fa-tag"></i> ExtendibleHash</a>
+          
+        </div>
       
 
       
@@ -595,8 +648,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <div class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -665,7 +727,11 @@
                     
                       
                     
-                    <span class="site-state-item-count">9</span>
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">11</span>
                     <span class="site-state-item-name">标签</span>
                   </a>
                 </div>
@@ -731,6 +797,23 @@
       </div>
 
       
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#可扩展哈希-ExtendibleHash"><span class="nav-number">1.</span> <span class="nav-text">可扩展哈希 ExtendibleHash</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#定义"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#理解"><span class="nav-number">1.2.</span> <span class="nav-text">理解</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子"><span class="nav-number">1.3.</span> <span class="nav-text">例子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码实现"><span class="nav-number">1.4.</span> <span class="nav-text">代码实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考内容"><span class="nav-number">1.5.</span> <span class="nav-text">参考内容</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
 
       
 
@@ -756,7 +839,7 @@
       <i class="fa fa-area-chart"></i>
     </span>
     
-    <span title="站点总字数">68k</span>
+    <span title="站点总字数">77k</span>
   
 
   
@@ -765,7 +848,7 @@
       <i class="fa fa-coffee"></i>
     </span>
     
-    <span title="站点阅读时长">1:54</span>
+    <span title="站点阅读时长">2:09</span>
   
 </div>
 
