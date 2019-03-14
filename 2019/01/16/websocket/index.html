@@ -100,11 +100,11 @@
 <meta name="keywords" content="WebSocket,即时聊天">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Web端即时聊天项目实现（基于WebSocket）">
-<meta property="og:url" content="https://blog.icedsoul.cn/2019/01/16/Web端即时聊天项目实现（基于WebSocket）/index.html">
+<meta property="og:url" content="https://blog.icedsoul.cn/2019/01/16/websocket/index.html">
 <meta property="og:site_name" content="桐小木">
 <meta property="og:description" content="项目背景&amp;emsp;其实这个项目算是我做过的花时间最长也投入心血最多的一个项目了，当时决定开始做这个的时候我几乎什么都不会，那时我个人的情况是：  JavaEE方面：会jsp+servlet，也简单使用过Struts，Spring仅仅只是听说过。 前端方面：html，css有一些基础，会使用Bootstrap前端工具开发集，js基本不了解。 数据库相关那时还没有学习数据库这门课程，但是熟悉jdbc">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-01-16T02:13:30.000Z">
+<meta property="og:updated_time" content="2019-03-13T08:02:59.573Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Web端即时聊天项目实现（基于WebSocket）">
 <meta name="twitter:description" content="项目背景&amp;emsp;其实这个项目算是我做过的花时间最长也投入心血最多的一个项目了，当时决定开始做这个的时候我几乎什么都不会，那时我个人的情况是：  JavaEE方面：会jsp+servlet，也简单使用过Struts，Spring仅仅只是听说过。 前端方面：html，css有一些基础，会使用Bootstrap前端工具开发集，js基本不了解。 数据库相关那时还没有学习数据库这门课程，但是熟悉jdbc">
@@ -114,7 +114,7 @@
 
 
 
-  <link rel="canonical" href="https://blog.icedsoul.cn/2019/01/16/Web端即时聊天项目实现（基于WebSocket）/">
+  <link rel="canonical" href="https://blog.icedsoul.cn/2019/01/16/websocket/">
 
 
 
@@ -388,7 +388,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://blog.icedsoul.cn/2019/01/16/Web端即时聊天项目实现（基于WebSocket）/">
+    <link itemprop="mainEntityOfPage" href="https://blog.icedsoul.cn/2019/01/16/websocket/">
 
     <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
       <meta itemprop="name" content="IcedSoul">
@@ -431,12 +431,24 @@
                 
               
 
-              <time title="创建时间：2019-01-16 09:59:00 / 修改时间：10:13:30" itemprop="dateCreated datePublished" datetime="2019-01-16T09:59:00+08:00">2019-01-16</time>
+              <time title="创建时间：2019-01-16 09:59:00" itemprop="dateCreated datePublished" datetime="2019-01-16T09:59:00+08:00">2019-01-16</time>
             
 
             
               
 
+              
+                
+                <span class="post-meta-divider">|</span>
+                
+
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-03-13 16:02:59" itemprop="dateModified" datetime="2019-03-13T16:02:59+08:00">2019-03-13</time>
               
             
           </span>
@@ -468,7 +480,7 @@
 
           
           
-            <span id="/2019/01/16/Web端即时聊天项目实现（基于WebSocket）/" class="leancloud_visitors" data-flag-title="Web端即时聊天项目实现（基于WebSocket）">
+            <span id="/2019/01/16/websocket/" class="leancloud_visitors" data-flag-title="Web端即时聊天项目实现（基于WebSocket）">
               <span class="post-meta-divider">|</span>
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
@@ -532,10 +544,10 @@
 <li><strong>JavaEE方面：</strong><br>会jsp+servlet，也简单使用过Struts，Spring仅仅只是听说过。</li>
 <li><strong>前端方面：</strong><br>html，css有一些基础，会使用Bootstrap前端工具开发集，js基本不了解。</li>
 <li><strong>数据库相关</strong><br>那时还没有学习数据库这门课程，但是熟悉jdbc与数据库的连接，会基本的增删改查SQL语句，简单使用过Hibernate</li>
-<li><strong>网络编程相关：</strong><br>通信相关的知识也仅限于计算机网络课程上学习的简单的Socket。 </li>
+<li><strong>网络编程相关：</strong><br>通信相关的知识也仅限于计算机网络课程上学习的简单的Socket。</li>
 </ul>
 <p>&emsp;在那种情况下，我决定来做这个即时聊天的项目，先定下使用SpringMVC+Hibernate作为后端框架，然后一步一步查资料寻找和学习通信和前端相关的知识和解决方案，最终花了几个月时间完成了这样的一个项目，基本达到了预期的功能。但是更重要的是在这个过程中，我学会了很多东西，比如遇到问题应该怎么解决，常用开发借助哪些工具之类的，学会了使用SpringMVC框架来快速进行开发，学会了js原生的语法等等。尽管在没人指导自己瞎摸的情况下完成这个项目真的花了很多的时间和精力，但是最后的成果和学到的东西让我感觉这些都是值得的。<br>&emsp;废话这么多的原因一个方面是想让以后的自己记得当时完成这个项目的心情，另一方面也是想告诉可能看到这篇博客的人，或许你也想做一个Web端即时聊天的项目，在漫无边际的搜索中从某一个旮沓角落里发现了这篇默默无闻的博客，你要相信尽管现在可能你会的很少，但是只要花时间踏实地去学习去研究，最终一定能够做出来自己想要做的项目，也能从这个过程中学习到很多东西，站在这个项目的基础上以后快速的开发出更多的更优秀的项目，学习更多的技术~<br>&emsp;前面我会把演示方式和代码放出来，之后我会把自己在学习和查阅资料的记录一一整理一下写出来，可能没有什么条理，很多地方可能会有错误和幼稚的想法，请见谅也欢迎指正。</p>
-<h2 id="项目演示"><a href="#项目演示" class="headerlink" title="项目演示"></a>项目演示</h2><p><strong>演示地址：</strong> <a href="http://119.23.212.211:8080/WithMe" target="_blank" rel="noopener">http://119.23.212.211:8080/WithMe</a><br><strong>演示说明：</strong> 请在浏览器中两个标签页中打开这个网址，自行注册两个账号，然后搜索添加彼此为好友，即可进行聊天。（同一个浏览器不同标签页可以登录不同的账号不会发生冲突）<br><strong>Bug反馈：</strong> 左边QQ群加群反馈或者发送邮件至：<a href="mailto:guoxiaofeng_2015@163.com" target="_blank" rel="noopener">guoxiaofeng_2015@163.com</a>。</p>
+<h2 id="项目演示"><a href="#项目演示" class="headerlink" title="项目演示"></a>项目演示</h2><p><strong>演示地址：</strong> <a href="http://119.23.212.211:8080/WithMe" target="_blank" rel="noopener">http://119.23.212.211:8080/WithMe</a><br><strong>演示说明：</strong> 请在浏览器中两个标签页中打开这个网址，自行注册两个账号，然后搜索添加彼此为好友，即可进行聊天。（同一个浏览器不同标签页可以登录不同的账号不会发生冲突）<br><strong>Bug反馈：</strong> QQ群730490237反馈或者发送邮件至：<a href="mailto:guoxiaofeng_2015@163.com" target="_blank" rel="noopener">guoxiaofeng_2015@163.com</a>。</p>
 <h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><p><a href="https://github.com/IcedSoul/WithMe" target="_blank" rel="noopener">https://github.com/IcedSoul/WithMe</a><br>（欢迎follow，star提issue~）</p>
 <h2 id="项目功能"><a href="#项目功能" class="headerlink" title="项目功能"></a>项目功能</h2><p>&emsp; 项目最开始，需要明确自己想要做是什么东西，想要完成什么功能。<br>&emsp; 这里啰嗦几句，其实这个项目最开始的设想的功能列表并不是这样的，这些是最后实际实现的功能，但是因为和最初设想地也差不多，这里就直接放出来了：</p>
 <ul>
@@ -611,7 +623,7 @@
 <li><p>通信协议</p>
 <ul>
 <li>WebScoket<br>/<em> 这个可以去<a href="http://www.52im.com看一些相关的资料，WebSocket和SSE都是比较不错的选择，WebSocket与Socket的不同里面也有介绍" target="_blank" rel="noopener">http://www.52im.com看一些相关的资料，WebSocket和SSE都是比较不错的选择，WebSocket与Socket的不同里面也有介绍</a> </em>/</li>
-<li>第三方jar包 <ul>
+<li>第三方jar包<ul>
 <li>Java-WebScoekt</li>
 <li>Github主页：<a href="https://github.com/TooTallNate/Java-WebSocket" target="_blank" rel="noopener">https://github.com/TooTallNate/Java-WebSocket</a><br>/<em> 这个工具当时可以说是解决了我的燃眉之急，WithMe1.0中没有使用这个jar包，使用的是JavaEE 7.0自带的WebSocket，结果Android端建立连接一直出错（可能是我不太会用），2.0中使用的是这个jar包，如我之前所说，如果你考虑地更多想做地更好的话，你有更好的选择，不妨去了解一下socket.io，Netty，Mina等等 </em>/</li>
 </ul>
@@ -638,7 +650,7 @@
 <h3 id="关于具体数据库实现："><a href="#关于具体数据库实现：" class="headerlink" title="关于具体数据库实现："></a>关于具体数据库实现：</h3><p>user_main，user_detail两个表表示用户。  </p>
 <p>而对于具体的好友关系的实现，经过查找资料和思考，目前有几种可以考虑的实现方式：</p>
 <ol>
-<li>建立一个friend表，当两个用户建立联系时就向表中插入一条数据，每次用户登录就查询这个表，建立好友列表。<br><strong>优点：</strong> 建表，好友关系插入、删除都比较简单<br><strong>缺点：</strong> 当用户比较多时，每次登陆会对用户数据库造成比较大的压力，当用户海量时每次登陆会消耗大量时间才能列出好友列表。 </li>
+<li>建立一个friend表，当两个用户建立联系时就向表中插入一条数据，每次用户登录就查询这个表，建立好友列表。<br><strong>优点：</strong> 建表，好友关系插入、删除都比较简单<br><strong>缺点：</strong> 当用户比较多时，每次登陆会对用户数据库造成比较大的压力，当用户海量时每次登陆会消耗大量时间才能列出好友列表。</li>
 <li>在user_detail表中加一项friend，存放好友的list，每次添加好友时，取出改list修改之后存入数据库，每次登陆时取出该list。<br><strong>优点：</strong> 列出好友列表快捷。<br><strong>缺点：</strong> 对于数据库如何设置list类型虽然有解决方法，但是比较繁琐（如序列化，Json转String等等），所以解决方案为不建立list，仅仅将好友的id（或者user_name存下来），根据资料。MySQL的varchar长度最长为65535个字节，5000以内好友的存储应该没有太大问题，足以满足需求。这样可以在取出数据库信息后经过一个方法将其转换为list，实现“伪list存储”。但是这种方案产生的结果就是：好友关系不太明确，添加审核无法实现，查询好友关系也不容易实现。</li>
 <li>另一种替代方案是动态创建一张好友表，每注册一个用户就为其新建一个好友表，用来存储好友关系。<br><strong>优点：</strong> 同2，列表简单，查询也简单。<br><strong>缺点：</strong> 每添加一个用户就多出一张好友表，开销较大。  </li>
 <li>因此经过考虑，我提出了第四种方案，仍旧采用将好友id存储为String放在user_detail表的方法，但是同时也建立一张好友关系表。user_detail表中的好友字段作为缓存好友表，设置一个标志位，当用户没有添加好友的操作标志位为0，直接读取user_detail表中好友id创建好友列表，当用户有过添加好友的操作时，标志位改为1，此时从好友关系表中查询此人的好友关系，并且对user_detail表中的好友id进行更新，同时将标志位置0.<br><strong>优点：</strong> 建立好友表不是很麻烦。（因为添加好友操作不是频繁性操作），查询好友关系简单（直接查询好友关系表）。可以实现，添加好友审核好友的功能。<br><strong>缺点：</strong> 开销虽然没有动态创建表大，但是依旧较大。</li>
