@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head><meta name="generator" content="Hexo 3.8.0">
+  <meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <meta name="baidu-site-verification" content="GSNdZByC4d">
+
+
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2">
+
+<link rel="stylesheet" href="/css/main.css?v=6.7.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/title2.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/title2.ico?v=6.7.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/title2.ico?v=6.7.0">
+
+
+  <link rel="mask-icon" href="/images/title2.ico?v=6.7.0" color="#222">
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '6.7.0',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: false,
+    fastclick: false,
+    lazyload: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+  
+
+
+
+  <meta name="description" content="前言之前的一年里已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识 的同学。 我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出">
+<meta name="keywords" content="Kubernetes基础知识,Service,Pod,Service">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes基础知识">
+<meta property="og:url" content="https://blog.icedsoul.cn/kubernetes-1.html">
+<meta property="og:site_name" content="桐小木">
+<meta property="og:description" content="前言之前的一年里已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识 的同学。 我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://blog.icedsoul.cn/home/icedsoul/Desktop/kubernetes01/01.png">
+<meta property="og:image" content="https://blog.icedsoul.cn/home/icedsoul/Desktop/kubernetes01/02.png">
+<meta property="og:image" content="https://blog.icedsoul.cn/home/icedsoul/Desktop/kubernetes01/03.png">
+<meta property="og:updated_time" content="2019-07-24T13:23:18.543Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Kubernetes基础知识">
+<meta name="twitter:description" content="前言之前的一年里已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识 的同学。 我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出">
+<meta name="twitter:image" content="https://blog.icedsoul.cn/home/icedsoul/Desktop/kubernetes01/01.png">
+
+
+
+
+
+
+  <link rel="canonical" href="https://blog.icedsoul.cn/kubernetes-1.html">
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  <title>Kubernetes基础知识 | 桐小木</title>
+  
+
+
+
+
+
+
+  <script>
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?ef054124ba894c986045305810831295";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">桐小木</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+      
+        <h1 class="site-subtitle" itemprop="description">IcedSoul's Blog</h1>
+      
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br>关于作者</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br>归档</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-acg">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="/acg/" rel="section"><i class="menu-item-icon fa fa-fw fa-television"></i> <br>动漫杂谈</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-wiki">
+
+    
+    
+    
+      
+    
+
+    
+
+    <a href="https://wiki.icedsoul.cn" rel="noopener" target="_blank"><i class="menu-item-icon fa fa-fw fa-wikipedia-w"></i> <br>wiki</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+  
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://blog.icedsoul.cn/kubernetes-1.html">
+
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="IcedSoul">
+      <meta itemprop="description" content="Nothing here">
+      <meta itemprop="image" content="/images/icon.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="桐小木">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Kubernetes基础知识
+
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+
+            
+            
+            
+
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-24 21:23:18" itemprop="dateCreated datePublished" datetime="2019-07-24T21:23:18+08:00">2019-07-24</time>
+            
+
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            
+          
+
+          
+          
+            <span id="/kubernetes-1.html" class="leancloud_visitors" data-flag-title="Kubernetes基础知识">
+              <span class="post-meta-divider">|</span>
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              
+                <span class="post-meta-item-text">阅读次数：</span>
+              
+                <span class="leancloud-visitors-count"></span>
+            </span>
+          
+
+          
+
+          
+            <div class="post-symbolscount">
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">本文字数：</span>
+                
+                <span title="本文字数">5.8k</span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长 &asymp;</span>
+                
+                <span title="阅读时长">10 分钟</span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前的一年里已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识 的同学。</p>
+<p>我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出～</p>
+<h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>作为系列博客的第一篇，今天主要来了解一下Kubernetes是什么，熟悉一下Kubernetes相关的一些常见术语。下一篇我会按照教程来搭建一个Kubernetes集群，再之后会在集群上一一尝试Kubernetes的各个组件，一边踩坑一边记录，一边学习～</p>
+<h2 id="Kubernetes-是什么？"><a href="#Kubernetes-是什么？" class="headerlink" title="Kubernetes 是什么？"></a>Kubernetes 是什么？</h2><blockquote>
+<p>Kubernetes（K8s）是一个基于容器技术的分布式架构领先方案，同时它也是一种设计思想，它也是一个开放的开发平台，也是一个完备的分布式系统支撑平台[1]。    </p>
+</blockquote>
+<p>这是参考资料[1]中的定义，当然Kubernetes官网也给出了它的定义：</p>
+<blockquote>
+<p>Kubernetes 是用于自动部署，扩展和管理容器化应用程序的开源系统[3]。</p>
+</blockquote>
+<p>从这些解释中可以看出，K8s是针对分布式系统的，与容器化技术相关，主要用于解决容器化应用程序的部署、扩展和管理。</p>
+<p>那么以我目前的知识量来看，K8s是一套运维工具，开发时可以无需考虑最后是否使用它，如何使用它。如上面所说，它只是一个“平台”，是帮助我们来管理服务的。其它的目前也理解不了，现在先了解一下它的大概定位就行，后面随着深入的学习相关只是我们应该会对K8s的定位有更进一步的认识。</p>
+<p>Google在2014年基于Borg发布了Kubernetes，Borg是Google内部使用的一个大规模集群管理系统。Kubernetes汲取了Borg过去十年的经验和教训，一经开源就迅速受到开源社区的追捧，许多知名公司加入到开发和推广的阵营[2]。</p>
+<p>具体的咱也不清楚，总之据说很厉害就对了。但是究竟哪里厉害？是否应该是使用它，为什么要使用它，那就只能通过进一步学习来寻找答案了。</p>
+<h2 id="为什么要使用K8s？"><a href="#为什么要使用K8s？" class="headerlink" title="为什么要使用K8s？"></a>为什么要使用K8s？</h2><p>我觉得[1]中一句话说的很好：</p>
+<blockquote>
+<p>IT行业从来都是由新技术驱动的[1]。</p>
+</blockquote>
+<p>随着时代和需求的变化，新技术的出现往往都是因为旧的技术已经无法满足现有的需求，不断探索和关注新的技术才能适应新的挑战。</p>
+<p>不过面对新技术时也不是说大家都在用那么我也用，大家都说好那么我也得说好。一样东西会带来好处多少也需要付出一些代价，在学习和使用之前不妨也先思考一下：我学习/使用K8s能得到什么，需要付出什么？我是否真的有学习/使用它的必要？</p>
+<p>嘛，冠冕堂皇的话也不多说，先根据我了解到的只是和参考资料来总结一下使用K8s的好处[1]：</p>
+<ol>
+<li>可以减少运维成本。K8s作为一个运维平台提供了众多的工具，与旧有部署和运维方式相比本身就帮助我们做了很多事情，只需要简单的配置就可以非常方便地运维，团队可以把主要精力放在架构和开发。</li>
+<li>可以使用微服务架构。微服务应用与传统巨石应用相比有着可独立开发、升级和扩展，系统稳定和迭代能力强，可快速扩容，技术栈自由等优点。K8s对于微服务架构的支持非常好，我们可以使用K8s来非常方便地管理微服务。</li>
+<li>快速迁移。只要使用K8s，我们可以不改动任何配置文件，快速地把应用从私有云迁移至公有云上。目前阿里云、华为云、腾讯云都提供了K8s的PaaS服务，以后提供此类服务的厂商会越来越多，迁移方式也会更加简单和完善。</li>
+<li>弹性服务扩容。K8s有服务弹性扩容机制，在遇到流量峰值的时候可以增加副本数量来应对。</li>
+<li>横向扩容。整个系统可以快速从几个Node的集群迁移至几百个Node的集群。</li>
+</ol>
+<p>其实这些好处都是得益于K8s底层工具和完善的服务调度和扩容策略，后面我们都会一一学习，这些好处看看即可，除非在生产系统中，否则平时我们能感受到的也就只有第一点而已2333。</p>
+<p>不管怎么样，学还是要学的。下面我们来简单了解一下K8s中常见的一些术语和基本含义。</p>
+<h2 id="K8s相关知识"><a href="#K8s相关知识" class="headerlink" title="K8s相关知识"></a>K8s相关知识</h2><h3 id="Cluster"><a href="#Cluster" class="headerlink" title="Cluster"></a>Cluster</h3><p>Cluster其实指的就是你用来搭建K8s的集群，可以是多台物理机或者虚拟机。</p>
+<p>其实，K8s的很多术语都可以看做是资源，它负责的就是把资源进行分配和管理，就跟大管家似的。Cluster其实指得就是K8s所拥有的资源的集合：所有的物理机或者虚拟机，包括计算、网络和存储等。</p>
+<h3 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h3><p>K8s会把整个Cluster的资源整合之后抽象化之后来进行调度，同时它也需要给用户来提供统一控制和管理的入口。</p>
+<p>在搭建集群的时候，我们会指定一台物理机或者虚拟机作为Master，它上面运行了K8s的核心服务，负责对整个Cluster进行管理和控制。上面主要运行着以下几个核心进程[1]：</p>
+<ul>
+<li>Kubernetes API Server(kube-api-server): 集群控制的入口进程，提供了集群内所有资源的增删改查操作的入口。<ul>
+<li>Kubernetes Controller Manager(kube-controller-manager): 所有资源的自动化控制中心。</li>
+<li>Kubernetes Scheduler(kube-scheduler): 负责资源调度的进程。</li>
+<li>Etcd：负责存储所有资源对象的数据。</li>
+</ul>
+</li>
+</ul>
+<p>上面这几个核心进程在后面我们还会仔细研究，目前我们只需要知道这几个进程在Master上运行，并且负责整个集群的管理和调度，用户通过Master来完成资源对象的增删改查。</p>
+<p>所以说，Master一旦宕机，整个集群将会处于失去管理的状态，虽然在后面我们一般只用一台物理机或者虚拟机作为Master，但是实际生产系统中一般会有三台物理机或者虚拟机作为Master来保证集群的高可用。</p>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p>Node就是集群中的普通机器，它们负责运行容器。Master会管理集群中的所有Node，Node负责监控汇报它上面运行的容器的状态，并且根据Master调度来管理容器的生命周期。Node一旦宕机，Master会将运行在其上的容器转移到其它Node上。在Node上主要运行着以下几个核心进程[1]：</p>
+<ul>
+<li>kubelet: 负责Pod对应容器的创建、启停等任务，和Master密切合作完成集群管理的功能。</li>
+<li>kube-proxy:实现K8s Service的通信和负载均衡的重要组建。</li>
+<li>docker:负责本机容器的创建和管理。</li>
+</ul>
+<p>Node可以随意增加和减少，只需要预先在Node上运行上述核心进程，然后向Master注册自己即可加入到集群之中。</p>
+<h3 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h3><p>上面所提到的Pod是K8s专有的一个重要概念，<strong>它是K8s的最小工作单元</strong>。每个Pod会有一个特殊的被称为“根容器”的Pause容器。除了Pause容器之外，每个Pod还包含一个或者多个业务容器。</p>
+<p>K8s引入Pod的目的是[2]：</p>
+<ol>
+<li>可管理性：有些容器联系比较紧密，需要一起工作，Pod是比容器更高层次的抽象资源，可以有多个容器。K8s以Pod为最小单位来进行调度、扩展、共享资源和管理生命周期。</li>
+<li>通信和资源共享：Pod中的所有容器共享同一个IP和Port，容器之间可以通过localhost来通信。所有容器键也可以共享存储，volume挂载到Pod实质上是挂载到了Pod中的每一个容器。</li>
+</ol>
+<h3 id="Controller"><a href="#Controller" class="headerlink" title="Controller"></a>Controller</h3><p>K8s是通过Controller来创建Pod的，这也是我们最需要了解的一个部分，我们平常就是通过Controller来配置Pod的。Controller提供了多种Controller来满足不同场景的需求[1]：</p>
+<ul>
+<li>Deployment：这是最常用的一种Controller,它可以管理Pod的运行。</li>
+<li>ReplicaSet：实现了Pod的多副本管理，使用Deployment时会自动创建ReplicaSet，我们平常不需要直接使用ReplicaSet。</li>
+<li>DaemonSet：用于每个Node最多运行一个Pod副本的场景。</li>
+<li>StatefulSet：可以保证每个副本在Pod的生命周期中名称不变，其它Controller的Pod发生故障删除重启后Pod名称会发生变化。并且Stateful可以保证副本按照固定的顺序启动、更新或删除。</li>
+<li>Job用于运行完就删除的应用，其它Controller的Pod长期持续运行。</li>
+</ul>
+<p>关于这些Controller的具体使用在集群搭建之后，我们也会专门有一篇文章来进行详细介绍和讲解，这里只需要知道各种Controller的存在和大概作用就行。</p>
+<h3 id="Service"><a href="#Service" class="headerlink" title="Service"></a>Service</h3><p>Service同样是我们需要着重了解的一个K8s的核心资源对象，我们上面说到Pod是K8s资源调度的单位，而Controller是负责创建、启停和删除Pod的，但是通过Controller启动的Pod有一个问题，Pod是允许有多个副本存在的，每个副本的IP是不同的，那么在访问时究竟访问哪个端口呢？就算知道了每个IP写好了访问方式，但是Pod有可能会销毁和重启，重启之后IP地址就会改变，所以直接用IP访问就不太现实[2]。</p>
+<p>实际上，我们可以通过Service来访问Pod，我们在创建Service时通过label(后面解释)将Service和Pod进行绑定，Service会自动去寻找Pod的所有副本，而Service自身则拥有一个唯一的Cluster IP，也就是说，我们只需要通过Cluster IP : Port 访问Service，Service会自动寻找对应的一个或者多个Pod副本，而kube-proxy负责将Service的请求自动分配给多个Pod副本，自动完成了负载均衡。</p>
+<p>所以，在K8s中，Pod负责创建容器，Service负责访问容器，在这个过程中自动完成了多副本Pod的负载均衡。</p>
+<h3 id="NameSpace"><a href="#NameSpace" class="headerlink" title="NameSpace"></a>NameSpace</h3><p>namespace其实就是类似于一个账号管理系统，就和你登录windows用的账号一样，每个用户的创建的资源都是互相隔离的，在k8s中，namespace就是负责不同用户或项目资源隔离的。</p>
+<p>namespace可以将一个Cluster逻辑上划分为多个虚拟的Cluster，每个namespace可以认为是一个独立的Cluster，不同namespace资源完全隔离[2]。</p>
+<p>如果不指定namespace，则所有的资源都会在default之下，kubernetes的系统进程运行在名为kube-system的namespace之下。</p>
+<p>K8s相关的资源对象暂时介绍到这里，其实还有许多其它的东西没有说，比如Label、Volume、PersistentVolume、PersistentVolumeClaim、Annotation和ConfigMap等等。但是这些东西都是属于可以以后慢慢学习的高级内容，刚刚学习时我们还是先了解上述的核心资源对象，在脑海中想象出来K8s的基本结构和管理方式即可，其它东西说太多也记不住，等到后面以一个真实系统和实际应用场景为例再详细讲解那些东西。</p>
+<h2 id="整体认识"><a href="#整体认识" class="headerlink" title="整体认识"></a>整体认识</h2><p>在了解了K8s的核心资源对象之后，我们其实可以在脑海中想象出来K8s集群的基本结构了：</p>
+<p>首先K8s运行在几台物理机或者虚拟机上，我们就假设是四台好了，其中一台是Master，剩下三个是Node，就分别称之为Node1，Node2和Node3好了。</p>
+<p>那么，首先，根据上面的描述Master和Node分别跑了几个核心进程，那么就如下图所示：</p>
+<p><img src="/home/icedsoul/Desktop/kubernetes01/01.png" alt="01"></p>
+<p>再结合每个进程的功能：Master中的kube-api-server给我们提供了资源管理的接口，所以我们可以在Master上面通过Deployment之类的Controller创建Pod。而kube-controller-manager则根据配置文件进行了创建，kube-scheduler将需要创建的资源对象平均调度到所有正常工作的Node中，并且将绑定信息写入etcd。</p>
+<p>而Node中收到了kubelet通过kube-api-server监听到了Pod绑定事件，从etcd中拉取到资源对象配置后，去下载对应镜像，最终，容器在docker中启动了起来。当外部应用通过Service访问这个容器时，Node的kube-proxy负责将流量转发给真正的Pod副本。</p>
+<p>上面是Master和Node运行的进程的结构，也就是真正运行的物理结构，但是实际上K8s引入了Pod、Service等虚拟资源，实际上我们进行调度和分配的过程还比较复杂，我们这里先看一种比较简单的能够说明问题的结构：</p>
+<p>假设我们部署了一个Pod，这个Pod包含了两个Container：group和group-message，Pod的副本数量为2，同时我们创建了一个叫做group-service的Service关联到了这个副本，那么实际运行的情况应该是（此处为了简单起见，我们假设只有Node1和Node2两个Node，三个Node画图太大了不好截图233）：</p>
+<p><img src="/home/icedsoul/Desktop/kubernetes01/02.png" alt="02"></p>
+<p>两个Pod副本被分别调度到了两个Node中，但是两个Pod会和一个Service绑定，service会有一个Cluster IP，我们不需要知道实际上这个Pod在哪里运行，只需要通过Cluster IP：Port即可访问这个Pod中的容器。</p>
+<p>假设我们这是又部署了一个Pod,这个Pod只含有一个容器user，同时我们创建了一个user-service与这个Pod绑定了，那么这时候的图应该为：</p>
+<p><img src="/home/icedsoul/Desktop/kubernetes01/03.png" alt="03"></p>
+<p>通过上面的解释和图片相信你能够对K8s的整体有了一定的认识。今天只是简单介绍一下K8s的大概情况和相关知识，帮助大家对所学习的内容建立起一个大概的印象，知道我们在学习的是一个什么东西，所以一直在空谈不动手。下节课我们将开始从零搭建一个K8s集群，后续我们将会在这个集群上进行更多的实验和学习。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
+<li>《Kubernetes 权威指南 第四版 从Docker到Kubernetes实践全接触》 龚正 等 中国工信出版社</li>
+<li>《每天五分钟 玩转Kubernetes》 CloudMan 著 清华大学出版社</li>
+<li>Kubernetes官网： <a href="https://kubernetes.io/zh/" target="_blank" rel="noopener">https://kubernetes.io/zh/</a></li>
+</ol>
+
+      
+    </div>
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Kubernetes基础知识/" rel="tag"><i class="fa fa-tag"></i> Kubernetes基础知识</a>
+          
+            <a href="/tags/Service-Pod-Service/" rel="tag"><i class="fa fa-tag"></i> Service,Pod,Service</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/extendible-hash.html" rel="next" title="可扩展哈希 ExtendibleHash Java实现">
+                <i class="fa fa-chevron-left"></i> 可扩展哈希 ExtendibleHash Java实现
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+    <div class="comments" id="gitalk-container">
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image" src="/images/icon.jpeg" alt="IcedSoul">
+            
+              <p class="site-author-name" itemprop="name">IcedSoul</p>
+              <p class="site-description motion-element" itemprop="description">Nothing here</p>
+          </div>
+
+          
+            <nav class="site-state motion-element">
+              
+                <div class="site-state-item site-state-posts">
+                
+                  <a href="/archives/">
+                
+                    <span class="site-state-item-count">7</span>
+                    <span class="site-state-item-name">日志</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-categories">
+                  <a href="/categories/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">5</span>
+                    <span class="site-state-item-name">分类</span>
+                  </a>
+                </div>
+              
+
+              
+                
+                
+                <div class="site-state-item site-state-tags">
+                  <a href="/tags/index.html">
+                    
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                      
+                    
+                    <span class="site-state-item-count">13</span>
+                    <span class="site-state-item-name">标签</span>
+                  </a>
+                </div>
+              
+            </nav>
+          
+
+          
+
+          
+            <div class="links-of-author motion-element">
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="https://github.com/IcedSoul" title="GitHub &rarr; https://github.com/IcedSoul" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+                <span class="links-of-author-item">
+                  
+                  
+                    
+                  
+                  
+                    
+                  
+                  <a href="/guoxiaofeng_2015@163.com" title="E-Mail &rarr; guoxiaofeng_2015@163.com"><i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                </span>
+              
+            </div>
+          
+
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.bewindoweb.com/" title="http://www.bewindoweb.com/" rel="noopener" target="_blank">BEWINDOWEB /技术/APP/二次元</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+            
+          
+          
+
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主要内容"><span class="nav-number">2.</span> <span class="nav-text">主要内容</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kubernetes-是什么？"><span class="nav-number">3.</span> <span class="nav-text">Kubernetes 是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#为什么要使用K8s？"><span class="nav-number">4.</span> <span class="nav-text">为什么要使用K8s？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#K8s相关知识"><span class="nav-number">5.</span> <span class="nav-text">K8s相关知识</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Cluster"><span class="nav-number">5.1.</span> <span class="nav-text">Cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Master"><span class="nav-number">5.2.</span> <span class="nav-text">Master</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node"><span class="nav-number">5.3.</span> <span class="nav-text">Node</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Pod"><span class="nav-number">5.4.</span> <span class="nav-text">Pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Controller"><span class="nav-number">5.5.</span> <span class="nav-text">Controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Service"><span class="nav-number">5.6.</span> <span class="nav-text">Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NameSpace"><span class="nav-number">5.7.</span> <span class="nav-text">NameSpace</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#整体认识"><span class="nav-number">6.</span> <span class="nav-text">整体认识</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考资料"><span class="nav-number">7.</span> <span class="nav-text">参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2019</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">IcedSoul</span>
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+    
+    <span title="站点总字数">83k</span>
+  
+
+  
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-coffee"></i>
+    </span>
+    
+    <span title="站点阅读时长">2:18</span>
+  
+</div>
+
+
+  <div class="powered-by">
+    行胜于言
+  </div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">
+    慎言笃行
+  </div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+    
+    
+  
+  <script color="0,0,0" opacity="0.5" zindex="-1" count="99" src="/lib/canvas-nest/canvas-nest.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+  
+
+
+  <script src="/js/src/utils.js?v=6.7.0"></script>
+
+  <script src="/js/src/motion.js?v=6.7.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/src/affix.js?v=6.7.0"></script>
+
+  <script src="/js/src/schemes/pisces.js?v=6.7.0"></script>
+
+
+
+
+  
+  <script src="/js/src/scrollspy.js?v=6.7.0"></script>
+<script src="/js/src/post-details.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  <script src="/js/src/bootstrap.js?v=6.7.0"></script>
+
+
+
+  
+
+
+  
+    
+
+<script src="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+
+
+<script src="//cdn.jsdelivr.net/npm/js-md5@0.7.3/src/md5.min.js"></script>
+
+<script>
+  var gitalk = new Gitalk({
+    clientID: 'bc5dd2274a78305e909f',
+    clientSecret: 'f647861bdd9f4224ebb3bc69151537ecd7766bb1',
+    repo: 'Gitment',
+    owner: 'IcedSoul',
+    admin: ['IcedSoul'],
+    id: md5(location.pathname),
+    distractionFreeMode: 'true'
+  });
+  gitalk.render('gitalk-container');
+</script>
+
+  
+
+
+  
+
+
+
+
+
+  
+  
+  <script>
+    
+    function addCount(Counter) {
+      var $visitors = $('.leancloud_visitors');
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
+        .done(function({ results }) {
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', '/classes/Counter/' + counter.objectId, JSON.stringify({ time: { '__op': 'Increment', 'amount': 1 } }))
+            
+              .done(function() {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.time + 1);
+              })
+            
+              .fail(function ({ responseJSON }) {
+                console.log(`Failed to save Visitor num, with error message: ${responseJSON.error}`);
+              })
+          } else {
+            
+              var $element = $(document.getElementById(url));
+              $element.find('.leancloud-visitors-count').text('Counter not initialized! More info at console err msg.');
+              console.error('ATTENTION! LeanCloud counter has security bug, see how to solve it here: https://github.com/theme-next/hexo-leancloud-counter-security. \n However, you can still use LeanCloud without security, by setting `security` option to `false`.');
+            
+          }
+        })
+        .fail(function ({ responseJSON }) {
+          console.log(`LeanCloud Counter Error: ${responseJSON.code} ${responseJSON.error}`);
+        });
+    }
+    
+
+    $(function() {
+      $.get('https://app-router.leancloud.cn/2/route?appId=' + 'tAzqQw92n6UcueiKh29dzBk4-gzGzoHsz')
+        .done(function({ api_server }) {
+          var Counter = function(method, url, data) {
+            return $.ajax({
+              method: method,
+              url: 'https://' + api_server + '/1.1' + url,
+              headers: {
+                'X-LC-Id': 'tAzqQw92n6UcueiKh29dzBk4-gzGzoHsz',
+                'X-LC-Key': 'NlqlQHrdYzWMsBOv3NW7kajj',
+                'Content-Type': 'application/json',
+              },
+              data: data
+            });
+          };
+          
+            addCount(Counter);
+          
+        });
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
