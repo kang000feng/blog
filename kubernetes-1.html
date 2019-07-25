@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://img.icedsoul.cn/img/blog/kubernetes01/01.png">
 <meta property="og:image" content="http://img.icedsoul.cn/img/blog/kubernetes01/02.png">
 <meta property="og:image" content="http://img.icedsoul.cn/img/blog/kubernetes01/03.png">
-<meta property="og:updated_time" content="2019-07-25T01:43:06.076Z">
+<meta property="og:updated_time" content="2019-07-25T01:48:59.990Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Kubernetes基础知识">
 <meta name="twitter:description" content="前言之前的一年里我已经接触过一些Kubernetes相关的知识，但是一直以来没有系统地学习过Kubernetes。因此，我准备写一系列博客来系统地学习其相关知识，同时记录下自己的学习经历和感受，同时也希望能够帮助到想要学习相关知识的同学。 我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出">
@@ -436,7 +436,7 @@
                 
               
 
-              <time title="创建时间：2019-07-25 09:43:06" itemprop="dateCreated datePublished" datetime="2019-07-25T09:43:06+08:00">2019-07-25</time>
+              <time title="创建时间：2019-07-25 09:48:59" itemprop="dateCreated datePublished" datetime="2019-07-25T09:48:59+08:00">2019-07-25</time>
             
 
             
@@ -532,7 +532,7 @@
 <p>我学习时主要的的参考资料都会列在博客结尾，博客内容不一定正确、全面，只是作为我学习的记录，我会尽量把问题讲清楚，但是毕竟时间和能力有限，如果出现错误欢迎大家指出～</p>
 <h2 id="主要内容"><a href="#主要内容" class="headerlink" title="主要内容"></a>主要内容</h2><p>作为系列博客的第一篇，今天主要来了解一下Kubernetes是什么，熟悉一下Kubernetes相关的一些常见术语。下一篇我会按照教程来搭建一个Kubernetes集群，再之后会在集群上一一尝试Kubernetes的各个组件，一边踩坑一边记录，一边学习～</p>
 <h2 id="Kubernetes-是什么？"><a href="#Kubernetes-是什么？" class="headerlink" title="Kubernetes 是什么？"></a>Kubernetes 是什么？</h2><blockquote>
-<p>Kubernetes（K8s）是一个基于容器技术的分布式架构领先方案，同时它也是一种设计思想，它也是一个开放的开发平台，也是一个完备的分布式系统支撑平台[1]。    </p>
+<p>Kubernetes（K8s）是一个基于容器技术的分布式架构领先方案，同时它也是一种设计思想，它也是一个开放的开发平台，也是一个完备的分布式系统支撑平台[1]。</p>
 </blockquote>
 <p>这是参考资料[1]中的定义，当然Kubernetes官网也给出了它的定义：</p>
 <blockquote>
@@ -563,12 +563,10 @@
 <h3 id="Master"><a href="#Master" class="headerlink" title="Master"></a>Master</h3><p>K8s会把整个Cluster的资源整合之后抽象化之后来进行调度，同时它也需要给用户来提供统一控制和管理的入口。</p>
 <p>在搭建集群的时候，我们会指定一台物理机或者虚拟机作为Master，它上面运行了K8s的核心服务，负责对整个Cluster进行管理和控制。上面主要运行着以下几个核心进程[1]：</p>
 <ul>
-<li>Kubernetes API Server(kube-api-server): 集群控制的入口进程，提供了集群内所有资源的增删改查操作的入口。<ul>
+<li>Kubernetes API Server(kube-api-server): 集群控制的入口进程，提供了集群内所有资源的增删改查操作的入口。</li>
 <li>Kubernetes Controller Manager(kube-controller-manager): 所有资源的自动化控制中心。</li>
 <li>Kubernetes Scheduler(kube-scheduler): 负责资源调度的进程。</li>
 <li>Etcd：负责存储所有资源对象的数据。</li>
-</ul>
-</li>
 </ul>
 <p>上面这几个核心进程在后面我们还会仔细研究，目前我们只需要知道这几个进程在Master上运行，并且负责整个集群的管理和调度，用户通过Master来完成资源对象的增删改查。</p>
 <p>所以说，Master一旦宕机，整个集群将会处于失去管理的状态，虽然在后面我们一般只用一台物理机或者虚拟机作为Master，但是实际生产系统中一般会有三台物理机或者虚拟机作为Master来保证集群的高可用。</p>
