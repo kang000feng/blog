@@ -105,7 +105,7 @@
 <meta property="og:site_name" content="桐小木">
 <meta property="og:description" content="前言在上一篇博客中我们介绍了Kubernetes的一些概念和一些常见术语，读过之后大家应该对Kubernetes的定位和大概组织结构有了一些基本的认识，为了接下来进一步进行实验和学习，这节课我们先来搭建一个基本的Kubernetes集群，后续可以依托这个集群来进一步学习其内容。 Kubernetes的安装方式有很多种，可以选择安装一个基本可用的MiniKube，也可以使用Kubeadm来安装一个常">
 <meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-06T08:09:42.242Z">
+<meta property="og:updated_time" content="2019-08-06T08:58:37.054Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用Kubeadm搭建Kubernetes 1.15 集群">
 <meta name="twitter:description" content="前言在上一篇博客中我们介绍了Kubernetes的一些概念和一些常见术语，读过之后大家应该对Kubernetes的定位和大概组织结构有了一些基本的认识，为了接下来进一步进行实验和学习，这节课我们先来搭建一个基本的Kubernetes集群，后续可以依托这个集群来进一步学习其内容。 Kubernetes的安装方式有很多种，可以选择安装一个基本可用的MiniKube，也可以使用Kubeadm来安装一个常">
@@ -432,7 +432,7 @@
                 
               
 
-              <time title="创建时间：2019-08-06 16:09:42" itemprop="dateCreated datePublished" datetime="2019-08-06T16:09:42+08:00">2019-08-06</time>
+              <time title="创建时间：2019-08-06 16:58:37" itemprop="dateCreated datePublished" datetime="2019-08-06T16:58:37+08:00">2019-08-06</time>
             
 
             
@@ -490,7 +490,7 @@
                 
                   <span class="post-meta-item-text">本文字数：</span>
                 
-                <span title="本文字数">6k</span>
+                <span title="本文字数">5.9k</span>
               
 
               
@@ -526,18 +526,18 @@
       
         <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在上一篇博客中我们介绍了Kubernetes的一些概念和一些常见术语，读过之后大家应该对Kubernetes的定位和大概组织结构有了一些基本的认识，为了接下来进一步进行实验和学习，这节课我们先来搭建一个基本的Kubernetes集群，后续可以依托这个集群来进一步学习其内容。</p>
 <p>Kubernetes的安装方式有很多种，可以选择安装一个基本可用的MiniKube，也可以使用Kubeadm来安装一个常见的Kubernetes集群，还可以使用二进制安装的方式安装一个用于生产环境的集群。</p>
-<p>在这篇博客中，我们选择使用Kubeadm工具来安装一个最常见的k8s集群。目前为止，k8s的最新版本是1.15，所以在这篇博客中我们选择安装1.15版本，如果你看到博客时k8s已经有了更新的版本，那么你可以安装当前最新版本进行安装学习，相信安装方式不会产生太大的变化，如果有较大不同我会在更新此篇博客。</p>
+<p>在这篇博客中，我们选择使用Kubeadm工具来安装一个最常见的k8s集群。目前为止，k8s的最新版本是1.15，所以在这篇博客中我们选择安装1.15版本，如果你看到博客时k8s已经有了更新的版本，那么你可以安装当前最新版本进行安装学习，相信安装方式不会产生太大的变化，如果有较大不同我会更新此篇博客。</p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>安装k8s集群需要准备以下内容：</p>
 <ol>
-<li>至少2台服务器最好是3台以上，linux系统。（可以在本地安装几台CentOS虚拟机，如果服务器是其它Linux发行版，可参考官网安装方式）</li>
+<li>至少2台服务器最好是3台以上，linux系统。（可以在本地安装几台CentOS虚拟机，如果系统是其它Linux发行版，可参考官网安装方式）</li>
 <li>每台服务器配置最低为2核4G。（如果配置较低也不是不行，可能会出问题。不过你也可以试着搭一搭，毕竟只是为了学习的话一般也不会跑太大的系统。）</li>
 <li>保证所有服务器网络畅通。（可以互相ping通。）</li>
 </ol>
-<p>如果只有一台服务器，可以进行k8s官网查看如何安装Minikube。</p>
+<p>如果只有一台服务器，可以去k8s官网查看如何安装Minikube。</p>
 <h2 id="安装Docker"><a href="#安装Docker" class="headerlink" title="安装Docker"></a>安装Docker</h2><p>所有服务器都需要先安装Docker，它用于运行k8s的基础设施服务以及我们之后部署的业务。下面是CentOS 7安装Docker的方式。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装yum源</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum makecache fast</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 查看目前的Docker版本</span><br><span class="line">yum list docker-ce.x86_64  --showduplicates |sort -r</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装18.09.7 版本</span><br><span class="line">yum install -y --setopt=obsoletes=0 \</span><br><span class="line">  docker-ce-18.09.7-3.el7 </span><br><span class="line">  </span><br><span class="line"><span class="meta">#</span> 运行Docker，开机自启动</span><br><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
-<p>我们选择安装的Docker版本为18.09.7，如果安装其它版本可以根据查看到的Docker版本的名称修改安装时的参数来安装自己想要的版本。</p>
-<p>在各个服务器都成功安装Docker后，分别运行如下命令检查Docker是否成功安装，版本是否正确。有可能会自动安装较新版本，不过无所谓，只要成功安装docker即可。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 安装yum源</span><br><span class="line">yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">yum-config-manager \</span><br><span class="line">    --add-repo \</span><br><span class="line">    https://download.docker.com/linux/centos/docker-ce.repo</span><br><span class="line">yum makecache fast</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 查看目前的Docker版本</span><br><span class="line">yum list docker-ce.x86_64  --showduplicates |sort -r</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 安装18.09.7 版本</span><br><span class="line">yum install -y --setopt=obsoletes=0 \</span><br><span class="line">  docker-ce-18.09.7-3.el7</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 运行Docker，开机自启动</span><br><span class="line">systemctl start docker</span><br><span class="line">systemctl enable docker</span><br></pre></td></tr></table></figure>
+<p>我们选择安装的Docker版本为18.09.7，如果安装其它版本可以根据查看到的Docker版本的名称修改安装时的参数来安装对应版本。</p>
+<p>在各个服务器都成功安装Docker后，分别运行如下命令检查Docker是否成功安装，版本是否正确。有可能会自动安装较新版本，不过无所谓，只要成功安装即可。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 查看Docker是否正在运行，Active(running)表示正常运行</span><br><span class="line">systemctl status docker</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span> 查看Docker版本</span><br><span class="line">docker --version</span><br></pre></td></tr></table></figure>
 <h2 id="修改hosts"><a href="#修改hosts" class="headerlink" title="修改hosts"></a>修改hosts</h2><p>为了便于服务器之间互相通信，我们最好先修改每台服务器的hosts文件，我本次搭建k8s集群一共使用了四台服务器，IP地址分别为</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">10.141.211.176</span><br><span class="line">10.141.211.180</span><br><span class="line">10.141.212.21</span><br><span class="line">10.141.212.138</span><br></pre></td></tr></table></figure>
@@ -548,7 +548,7 @@
 <p>修改完hosts文件后可以使用reboot命令重启各服务器，重启后可以看到命令终端root@后的名字变为上面IP地址后面对应的名字说明修改成功，如果没有说明修改无效，需要重新修改/etc/hosts文件。</p>
 <h2 id="系统配置"><a href="#系统配置" class="headerlink" title="系统配置"></a>系统配置</h2><p>首先，我们需要禁用各服务器的防火墙</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl stop firewalld</span><br><span class="line">systemctl disable firewalld</span><br></pre></td></tr></table></figure>
-<p>然后，需要禁用linux交换分区</p>
+<p>然后，需要设置setlinux</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setenforce 0</span><br><span class="line"></span><br><span class="line">vi /etc/selinux/config</span><br></pre></td></tr></table></figure>
 <p>修改文件中对应标签为如下内容：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SELINUX=disabled</span><br></pre></td></tr></table></figure>
@@ -559,7 +559,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">net.bridge.bridge-nf-call-ip6tables = 1</span><br><span class="line">net.bridge.bridge-nf-call-iptables = 1</span><br><span class="line">net.ipv4.ip_forward = 1</span><br></pre></td></tr></table></figure>
 <p>保存退出后，执行命令以使修改生效：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">modprobe br_netfilter</span><br><span class="line">sysctl -p /etc/sysctl.d/k8s.conf</span><br></pre></td></tr></table></figure>
-<h2 id="安装kubeadm，kubelet，kubectl等工具"><a href="#安装kubeadm，kubelet，kubectl等工具" class="headerlink" title="安装kubeadm，kubelet，kubectl等工具"></a>安装kubeadm，kubelet，kubectl等工具</h2><p>以下安装命令为官网提供的，但是官网提供的镜像地址被墙了，所以我们将其替换为了阿里云的镜像地址，国内也可以正常拉取镜像，所有服务器都需要执行以下命令。</p>
+<h2 id="安装kubeadm，kubelet，kubectl等工具"><a href="#安装kubeadm，kubelet，kubectl等工具" class="headerlink" title="安装kubeadm，kubelet，kubectl等工具"></a>安装kubeadm，kubelet，kubectl等工具</h2><p>以下安装命令是官网提供的，但是官网提供的镜像地址被墙了，所以我们将其替换为了阿里云的镜像地址，国内也可以正常拉取镜像，所有服务器都需要执行以下命令。</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">cat &lt;&lt;EOF &gt; /etc/yum.repos.d/kubernetes.repo</span><br><span class="line">[kubernetes]</span><br><span class="line">name=Kubernetes</span><br><span class="line">baseurl=https://mirrors.aliyun.com/kubernetes/yum/repos/kubernetes-el7-x86_64/</span><br><span class="line">enabled=1</span><br><span class="line">gpgcheck=1</span><br><span class="line">repo_gpgcheck=1</span><br><span class="line">gpgkey=https://mirrors.aliyun.com/kubernetes/yum/doc/yum-key.gpg https://mirrors.aliyun.com/kubernetes/yum/doc/rpm-package-key.gpg</span><br><span class="line">EOF</span><br><span class="line"></span><br><span class="line">yum install -y kubelet kubeadm kubectl --disableexcludes=kubernetes</span><br><span class="line"></span><br><span class="line">systemctl enable --now kubelet</span><br></pre></td></tr></table></figure>
 <p>执行命令之后即可看到kubeadm，kubelet，kubectl工具已被正常安装或更新。</p>
 <h2 id="初始化Master"><a href="#初始化Master" class="headerlink" title="初始化Master"></a>初始化Master</h2><p>接下来，我们来初始化Master节点，因为最开始我们就准备以10.141.211.21为Master节点，所以我们在该节点上执行以下命令来初始化Master节点，注意，以下操作只需要在Master节点执行。</p>
@@ -574,8 +574,7 @@
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 10.141.212.21:6443 --token 9wa0h0.yks4a7ubn97pirvp \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:5bcc552c254b6134920eefcebb272f0ae208096784530fdce334a2cb0a96707e</span><br></pre></td></tr></table></figure>
 <p>后面的hash值可能略有不同，也不用复制我的，不一样的用不了。你需要复制一下打印出来的这个语句，保存起来，等会儿其它节点加入集群需要用上这条语句。</p>
 <blockquote>
-<p>当然，在这一步可能会出各种各样的幺蛾子，可能会花式报错，我之前也遇到过很多。正常情况下一般不会有问题，但是如果遇到问题去查就行，都会有解决方案。不过有一点需要注意的是，如果这一步安装失败，重新初始化时一定请执行以下语句来重置集群的初始化，然后再重新执行上述语句进行初始化，以避免因重复初始化引起其它错误。</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;</span> # 重置集群</span><br><span class="line"><span class="meta">&gt;</span> kubeadm reset</span><br><span class="line"><span class="meta">&gt;</span> ifconfig cni0 down</span><br><span class="line"><span class="meta">&gt;</span> ip link delete cni0</span><br><span class="line"><span class="meta">&gt;</span> ifconfig flannel.1 down</span><br><span class="line"><span class="meta">&gt;</span> ip link delete flannel.1</span><br><span class="line"><span class="meta">&gt;</span> rm -rf /var/lib/cni/</span><br><span class="line"><span class="meta">&gt;</span></span><br></pre></td></tr></table></figure>
+<p>当然，在这一步可能会出各种各样的幺蛾子，可能会花式报错。但是正常情况下不会有问题，如果遇到问题去查就行，都会有解决方案。不过有一点需要注意的是，如果这一步安装失败，重新初始化时一定请执行以下语句来重置集群的初始化，然后再重新执行上述语句进行初始化，以避免因重复初始化引起其它错误。<br> <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span> 重置集群</span><br><span class="line">kubeadm reset</span><br><span class="line">ifconfig cni0 down</span><br><span class="line">ip link delete cni0</span><br><span class="line">ifconfig flannel.1 down</span><br><span class="line">ip link delete flannel.1</span><br><span class="line">rm -rf /var/lib/cni/</span><br></pre></td></tr></table></figure></p>
 </blockquote>
 <blockquote>
 <p>我自己在搭建或者使用集群中的一些问题我也记录了下来，或许有类似的错误，大家或许可以参考一下：   <a href="https://wiki.icedsoul.cn/?file=008-%E5%BE%AE%E6%9C%8D%E5%8A%A1/001-Kubernetes/003-Kubernetes%E7%9B%B8%E5%85%B3%E9%97%AE%E9%A2%98%E8%AE%B0%E5%BD%95" target="_blank" rel="noopener">Kubernetes相关问题记录</a></p>
@@ -589,13 +588,13 @@
 <p>可以看到集群组件状态都为Healthy，Master节点已经成功初始化。</p>
 <h2 id="安装Pod-Network"><a href="#安装Pod-Network" class="headerlink" title="安装Pod Network"></a>安装Pod Network</h2><p>接下来我们需要安装通信组件以使集群各节点之间可以进行通信，官网提供了很多种选择，在这里我们选择使用flannel，在Master节点运行以下命令以安装flannel。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/k8s/</span><br><span class="line">cd ~/k8s</span><br><span class="line">curl -O https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml</span><br><span class="line">kubectl apply -f  kube-flannel.yml</span><br></pre></td></tr></table></figure>
-<h2 id="其它节点加入集群"><a href="#其它节点加入集群" class="headerlink" title="其它节点加入集群"></a>其它节点加入集群</h2><p>Mater节点成功初始化之后，其它节点加入集群就非常简单了，只需要再其它节点执行以下刚刚我们保存的语句就可以了：</p>
+<h2 id="其它节点加入集群"><a href="#其它节点加入集群" class="headerlink" title="其它节点加入集群"></a>其它节点加入集群</h2><p>Mater节点成功初始化之后，其它节点加入集群就非常简单了，只需要再其它节点执行一下刚刚我们保存的join语句就可以了：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kubeadm join 10.141.212.21:6443 --token 9wa0h0.yks4a7ubn97pirvp \</span><br><span class="line">    --discovery-token-ca-cert-hash sha256:5bcc552c254b6134920eefcebb272f0ae208096784530fdce334a2cb0a96707e</span><br></pre></td></tr></table></figure>
-<p>在其它节点都执行玩join语句后，在Master节点执行</p>
+<p>在其它节点都执行完join语句后，在Master节点执行</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl get nodes</span><br></pre></td></tr></table></figure>
 <p>来查看所有node，可能会如下所示：</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">NAME     STATUS     ROLES    AGE   VERSION</span><br><span class="line">master   Ready      master   75m   v1.15.1</span><br><span class="line">node-1   Ready      &lt;none&gt;   30m   v1.15.1</span><br><span class="line">node-2   Ready      &lt;none&gt;   30m   v1.15.1</span><br><span class="line">node-3   NotReady   &lt;none&gt;   51s   v1.15.1</span><br></pre></td></tr></table></figure>
-<p>注意，因为node-3刚刚执行完join语句，所以这里状态还是NotReady，只需要稍等会儿，再次执行kubectl get nodes即可看到所有node都处于Ready状态，这时，k8s集群已经初步建立起来了。</p>
+<p>注意，因为我的node-3刚刚执行完join语句，所以这里状态还是NotReady，只需要等几分钟，再次执行kubectl get nodes即可看到所有node都处于Ready状态，这时，k8s集群已经初步建立起来了。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>这篇博客主要讲解了使用kubeadm工具在centos系统搭建k8s集群的过程，大家可以同时参考下面的参考资料结合自己的情况灵活使用上述命令，最终完整集群的搭建。有了一个基本可用的k8s集群，后面我们就可以在这个集群的基础上进一步学习k8s的相关内容。</p>
 <h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ol>
 <li>《Kubernetes 权威指南 第四版 从Docker到Kubernetes实践全接触》 龚正 等 中国工信出版社</li>
