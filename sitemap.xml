@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>https://blog.icedsoul.cn/kubernetes-1.html</loc>
+    <loc>https://blog.icedsoul.cn/kubernetes-2.html</loc>
     
-    <lastmod>2019-07-25T02:30:17.257Z</lastmod>
+    <lastmod>2019-08-06T08:09:42.242Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.icedsoul.cn/kubernetes-2.html</loc>
+    
+    <lastmod>2019-07-25T06:11:54.176Z</lastmod>
     
   </url>
   
   <url>
     <loc>https://blog.icedsoul.cn/b+Tree.html</loc>
     
-    <lastmod>2019-07-25T02:30:13.573Z</lastmod>
+    <lastmod>2019-07-25T02:36:48.889Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://blog.icedsoul.cn/kubernetes-1.html</loc>
+    
+    <lastmod>2019-07-25T02:30:17.257Z</lastmod>
     
   </url>
   
