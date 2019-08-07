@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://blog.icedsoul.cn/kubernetes-3.html</loc>
+    
+    <lastmod>2019-08-07T11:54:12.515Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://blog.icedsoul.cn/kubernetes-2.html</loc>
     
     <lastmod>2019-08-06T08:58:37.054Z</lastmod>
